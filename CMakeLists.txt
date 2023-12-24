@@ -6,11 +6,18 @@ project(${PROJECT_NAME})
 add_executable(BattleCity 
 	src/main.cpp
 	
-	src/ResourceManager.hpp
+	src/Resources/ResourceManager.hpp
 	src/Render/ShaderProgram.hpp
+	src/Render/Texture2D.hpp
+
 
 	src/Render/ShaderProgram.cpp
-	src/ResourceManager.cpp
+	src/Render/Texture2D.cpp
+	src/Resources/ResourceManager.cpp
+	
+	
+	# lib
+	src/Resources/stb_image.hpp
 )
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

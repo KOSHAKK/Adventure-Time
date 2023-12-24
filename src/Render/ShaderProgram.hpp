@@ -19,6 +19,10 @@ namespace Render
 		ShaderProgram& operator=(const ShaderProgram&) = delete;
 		ShaderProgram& operator=(ShaderProgram&& shaderProgram) noexcept;
 		ShaderProgram(ShaderProgram&& shaderProgram) noexcept;
+
+
+		void set_int(const std::string& uniform_name, const int value) const;
+
 	private:
 		GLuint m_id = 0;
 		bool m_isCompiled = false;

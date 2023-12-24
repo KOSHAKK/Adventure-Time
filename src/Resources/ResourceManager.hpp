@@ -3,11 +3,14 @@
 #include <map>
 #include <memory>
 
-namespace Render {
+namespace Render 
+{
 	class ShaderProgram;
+	class Texture2D;
 }
 
 typedef std::map<std::string, std::shared_ptr<Render::ShaderProgram>> shaderMap;
+typedef std::map<std::string, std::shared_ptr<Render::Texture2D>> textureMap;
 
 class ResourceManager
 {
@@ -23,11 +26,14 @@ public:
 	static std::shared_ptr<Render::ShaderProgram> get_shader_program(const std::string& name);
 
 
+	static std::shared_ptr<Render::Texture2D> load_texture(const std::string& name, const std::string& path);
+	static std::shared_ptr<Render::Texture2D> get_texture(const std::string& name);
 
 
 private:
 	static std::string m_executable_path;
 	static shaderMap m_shader_programs;
+	static textureMap m_textures;
 };
 
 

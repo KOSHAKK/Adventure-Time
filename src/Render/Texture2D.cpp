@@ -1,5 +1,5 @@
 #include "Texture2D.hpp"
-
+#include <iostream>
 
 namespace Render
 {
@@ -60,6 +60,23 @@ namespace Render
 	void Texture2D::bind() const
 	{
 		glBindTexture(GL_TEXTURE_2D, m_id);
+	}
+
+	void Texture2D::add_subTexture(const std::string& name, const glm::vec2& left_bottom, const glm::vec2& right_top)
+	{
+		m_sub_textures.emplace(name, SubTexture2D(left_bottom, right_top));
+	}
+
+	const SubTexture2D& Texture2D::get_subTexture(const std::string& name)
+	{
+		auto& it = m_sub_textures.find(name);
+		if (it == m_sub_textures.end())
+		{
+			std::cerr << "Can't find sub texture with name: " << name << std::endl;
+			static const SubTexture2D ret;
+			return ret;
+		}
+		return it->second;
 	}
 
 	Texture2D::~Texture2D()

@@ -84,9 +84,21 @@ int main(const int argc, const char** argv)
     glClearColor(1, 1, 0, 1);
 
     auto shader = ResourceManager::load_shader_program("default_shader", "res/Shaders/vs.vert", "res/Shaders/fs.frag");
-    auto tex = ResourceManager::load_texture("tex", "res/Textures/Objects/Egg_item.png");
-    
-    auto sp = ResourceManager::load_sprite("test_sprite", "default_shader", "tex", 100, 100);
+    auto tex = ResourceManager::load_texture("tex", "res/Textures/Objects/Basic_Grass_Biom_things.png");
+
+
+    std::vector<std::string> sub_textures_names{
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+    };
+
+    auto atlas = ResourceManager::load_texture_atlas("defaultAtlas", "res/Textures/Objects/Basic_Grass_Biom_things.png", sub_textures_names, 16, 16);
+
+    auto sp = ResourceManager::load_sprite("test_sprite", "default_shader", "defaultAtlas", 100, 100, "6");
     sp->set_position(glm::vec2(100, 100));
     sp->set_scale(glm::vec2(100, 100));
 
@@ -127,7 +139,7 @@ int main(const int argc, const char** argv)
 
 
         
-        sp->set_position(glm::vec2(100*sin(glfwGetTime()) + 100, 100*cos(glfwGetTime()) + 100));
+        sp->set_position(glm::vec2(100 * sin(glfwGetTime()) + 100, 100 * cos(glfwGetTime()) + 100));
         sp->render();
 
         

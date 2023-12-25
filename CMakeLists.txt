@@ -1,17 +1,19 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-set(PROJECT_NAME BattleCity)
+set(PROJECT_NAME SimpleGame)
 project(${PROJECT_NAME})
 
-add_executable(BattleCity 
+add_executable(SimpleGame 
 	src/main.cpp
 	
 	src/Resources/ResourceManager.hpp
 	src/Render/ShaderProgram.hpp
+	src/Render/Sprite.hpp
 	src/Render/Texture2D.hpp
 
 
 	src/Render/ShaderProgram.cpp
+	src/Render/Sprite.cpp
 	src/Render/Texture2D.cpp
 	src/Resources/ResourceManager.cpp
 	
@@ -31,7 +33,10 @@ target_link_libraries(${PROJECT_NAME} glfw)
 add_subdirectory(external/glad)
 target_link_libraries(${PROJECT_NAME} glad)
 
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
+
+include_directories(external/glm)
 
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)

@@ -6,6 +6,9 @@
 #include "Resources/ResourceManager.hpp"
 #include "Render/ShaderProgram.hpp"
 #include "Render/Texture2D.hpp"
+#include "Render/Sprite.hpp"
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 GLfloat point[] = {
      0.0f,  0.5f, 0.0f,
@@ -55,7 +58,7 @@ int main(const int argc, const char** argv)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     /* Create a windowed mode window and its OpenGL context */
-    GLFWwindow* pWindow = glfwCreateWindow(g_windowSizeX, g_windowSizeY, "Battle City", nullptr, nullptr);
+    GLFWwindow* pWindow = glfwCreateWindow(g_windowSizeX, g_windowSizeY, "Simple Game", nullptr, nullptr);
     if (!pWindow)
     {
         std::cout << "glfwCreateWindow failed!" << std::endl;
@@ -82,6 +85,10 @@ int main(const int argc, const char** argv)
 
     auto shader = ResourceManager::load_shader_program("default_shader", "res/Shaders/vs.vert", "res/Shaders/fs.frag");
     auto tex = ResourceManager::load_texture("tex", "res/Textures/Objects/Egg_item.png");
+    
+    auto sp = ResourceManager::load_sprite("test_sprite", "default_shader", "tex", 100, 100);
+    sp->set_position(glm::vec2(100, 100));
+    sp->set_scale(glm::vec2(100, 100));
 
     GLuint points_vbo = 0;
     glGenBuffers(1, &points_vbo);
@@ -107,19 +114,23 @@ int main(const int argc, const char** argv)
 
     /* Loop until the user closes the window */
 
+    glm::mat4 projectionMatrix = glm::ortho(0.f, static_cast<float>(g_windowSizeX), 0.f, static_cast<float>(g_windowSizeY), -100.f, 100.f);
 
+    shader->use();
+    shader->set_matrix4("projection", projectionMatrix);
 
+    glfwSwapInterval(1);
     while (!glfwWindowShouldClose(pWindow))
     {   
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
 
-        shader->use();
-        shader->set_int("tex", 0);
-        glBindVertexArray(vao);
-        tex->bind();    
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        
+        sp->set_position(glm::vec2(100*sin(glfwGetTime()) + 100, 100*cos(glfwGetTime()) + 100));
+        sp->render();
+
+        
 
         /* Swap front and back buffers */
         glfwSwapBuffers(pWindow);

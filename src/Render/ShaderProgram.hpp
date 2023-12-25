@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <string>
+#include <glm/mat4x4.hpp>
 
 namespace Render
 {
@@ -22,7 +23,7 @@ namespace Render
 
 
 		void set_int(const std::string& uniform_name, const int value) const;
-
+		void set_matrix4(const std::string& uniform_name, const glm::mat4& matrix);
 	private:
 		GLuint m_id = 0;
 		bool m_isCompiled = false;

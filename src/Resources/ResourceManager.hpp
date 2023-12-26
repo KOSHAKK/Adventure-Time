@@ -3,17 +3,20 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include <glm/vec2.hpp>
 
 namespace Render 
 {
 	class ShaderProgram;
 	class Texture2D;
 	class Sprite;
+	class AnimatedSprite;
 }
 
 typedef std::map<std::string, std::shared_ptr<Render::ShaderProgram>> shaderMap;
 typedef std::map<std::string, std::shared_ptr<Render::Texture2D>> textureMap;
 typedef std::map<std::string, std::shared_ptr<Render::Sprite>> spriteMap;
+typedef std::map<std::string, std::shared_ptr<Render::AnimatedSprite>> animated_spriteMap;
 
 class ResourceManager
 {
@@ -49,11 +52,23 @@ public:
 															     const unsigned int SubTextureWidht,
 															     const unsigned int SubTextureHeight);
 
+
+	static std::shared_ptr<Render::AnimatedSprite> load_animated_sprite(const std::string& name,
+																		const std::string& texture_altas_name,
+																		const std::string& shader_name,
+																		const std::vector<std::string>& sub_textures_names,
+																		const unsigned int delay_ms,
+																		const glm::vec2& position = { 0.f, 0.f },
+																		const glm::vec2& size = { 100.f, 100.f },
+																		const float rotate = 0.f);
+	
+	static std::shared_ptr<Render::AnimatedSprite> get_animated_sprite(const std::string& name);
 private:
 	static std::string m_executable_path;
 	static shaderMap m_shader_programs;
 	static textureMap m_textures;
 	static spriteMap m_sprites;
+	static animated_spriteMap m_animated_sprites;
 };
 
 

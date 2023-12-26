@@ -1,4 +1,5 @@
 #include "../Resources/ResourceManager.hpp"
+#include "../Render/AnimatedSprite.hpp"
 #include "../Render/ShaderProgram.hpp"
 #include "../Render/Texture2D.hpp"
 #include "../Render/Sprite.hpp"
@@ -15,6 +16,7 @@ std::string ResourceManager::m_executable_path;
 shaderMap ResourceManager::m_shader_programs;
 textureMap ResourceManager::m_textures;
 spriteMap ResourceManager::m_sprites;
+animated_spriteMap ResourceManager::m_animated_sprites;
 
 
 void ResourceManager::init(const std::string& executable_path)
@@ -158,4 +160,29 @@ std::shared_ptr<Render::Texture2D> ResourceManager::load_texture_atlas(const std
 		}	
 	}
 	return pTex;
+}
+
+
+
+std::shared_ptr<Render::AnimatedSprite> ResourceManager::load_animated_sprite(const std::string& name, 
+																			  const std::string& texture_altas_name, 
+																			  const std::string& shader_name, 
+																			  const std::vector<std::string>& sub_textures_names, 
+																			  const unsigned int delay_ms,
+																			  const glm::vec2& position, 
+																			  const glm::vec2& size, 
+																			  const float rotate)
+{
+	return m_animated_sprites.emplace(name, std::make_shared<Render::AnimatedSprite>(texture_altas_name, sub_textures_names, shader_name, delay_ms, position, size, rotate)).first->second;
+}
+
+std::shared_ptr<Render::AnimatedSprite> ResourceManager::get_animated_sprite(const std::string& name)
+{
+	auto& it = m_animated_sprites.find(name);
+	if (it == m_animated_sprites.end())
+	{
+		std::cerr << "Can't find animated sprite with name: " << name << std::endl;
+		return nullptr;
+	}
+	return it->second;
 }

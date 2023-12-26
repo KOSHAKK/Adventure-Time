@@ -46,7 +46,6 @@ namespace Render
 			m_current_sprite = 0;
 		}
 
-		std::cout << m_current_sprite << std::endl;
 		m_elapsed_time += delta_time;
 	}
 	void AnimatedSprite::set_position(const glm::vec2& pos)
@@ -54,6 +53,20 @@ namespace Render
 		for (auto& curr : m_sprites)
 		{
 			curr->set_position(pos);
+		}
+	}
+	void AnimatedSprite::set_size(const glm::vec2& size)
+	{
+		for (auto& curr : m_sprites)
+		{
+			curr->set_scale(size);
+		}
+	}
+	void AnimatedSprite::set_rotate(const float rotate)
+	{
+		for (auto& curr : m_sprites)
+		{
+			curr->set_rotate(rotate);
 		}
 	}
 }

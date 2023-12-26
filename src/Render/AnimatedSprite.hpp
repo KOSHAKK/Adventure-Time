@@ -24,6 +24,9 @@ namespace Render
 		void update(const unsigned int delta_time);
 
 		void set_position(const glm::vec2& pos);
+		void set_size(const glm::vec2& size);
+		void set_rotate(const float rotate);
+
 
 	private:
 		unsigned int m_current_sprite = 0;

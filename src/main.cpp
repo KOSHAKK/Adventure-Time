@@ -26,14 +26,13 @@ GLfloat texture_coords[] = {
 
 
 
-int g_windowSizeX = 640;
-int g_windowSizeY = 480;
+glm::vec2 window_size(640, 480);
 
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
-    g_windowSizeX = width;
-    g_windowSizeY = height;
-    glViewport(0, 0, g_windowSizeX, g_windowSizeY);
+    window_size.x = width;
+    window_size.y = height;
+    glViewport(0, 0, window_size.x, window_size.y);
 }
 
 void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int mode)
@@ -60,7 +59,7 @@ int main(const int argc, const char** argv)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     /* Create a windowed mode window and its OpenGL context */
-    GLFWwindow* pWindow = glfwCreateWindow(g_windowSizeX, g_windowSizeY, "Simple Game", nullptr, nullptr);
+    GLFWwindow* pWindow = glfwCreateWindow(window_size.x, window_size.y, "Simple Game", nullptr, nullptr);
     if (!pWindow)
     {
         std::cout << "glfwCreateWindow failed!" << std::endl;
@@ -85,8 +84,6 @@ int main(const int argc, const char** argv)
 
     glClearColor(1, 1, 0, 1);
 
-    auto shader = ResourceManager::load_shader_program("default_shader", "res/Shaders/vs.vert", "res/Shaders/fs.frag");
-    auto tex = ResourceManager::load_texture("tex", "res/Textures/Objects/Basic_Grass_Biom_things.png");
 
 
 
@@ -99,26 +96,24 @@ int main(const int argc, const char** argv)
         "5",
         "6",
         "7",
-        "8",
-        "9"
+        "8"
     };
+
 
     std::vector<std::string> qwe{
+        "5",
         "6",
         "7",
-        "8",
-        "9"
+        "8"
     };
 
 
-    auto atlas = ResourceManager::load_texture_atlas("defaultAtlas", "res/Textures/Objects/Basic_Grass_Biom_things.png", sub_textures_names, 16, 16);
+    auto shader = ResourceManager::load_shader_program("default_shader", "res/Shaders/vs.vert", "res/Shaders/fs.frag");
 
-    auto sp = ResourceManager::load_sprite("test_sprite", "default_shader", "defaultAtlas", 100, 100, "6");
-    sp->set_position(glm::vec2(100, 100));
-    sp->set_scale(glm::vec2(100, 100));
+    auto atlas = ResourceManager::load_texture_atlas("defaultAtlas", "res/Textures/Characters/Free Chicken Sprites.png", sub_textures_names, 16, 16);
 
+    auto animatedSprite = ResourceManager::load_animated_sprite("anim", "defaultAtlas", "default_shader", qwe, 200);
 
-    auto zxc = Render::AnimatedSprite("defaultAtlas", qwe, "default_shader", 500, glm::vec2(100, 100), glm::vec2(100, 100));
 
     GLuint points_vbo = 0;
     glGenBuffers(1, &points_vbo);
@@ -144,33 +139,30 @@ int main(const int argc, const char** argv)
 
     /* Loop until the user closes the window */
 
-    glm::mat4 projectionMatrix = glm::ortho(0.f, static_cast<float>(g_windowSizeX), 0.f, static_cast<float>(g_windowSizeY), -100.f, 100.f);
+    glm::mat4 projectionMatrix = glm::ortho(0.f, static_cast<float>(window_size.x), 0.f, static_cast<float>(window_size.y), -100.f, 100.f);
 
     shader->use();
     shader->set_matrix4("projection", projectionMatrix);
 
     glfwSwapInterval(1);
 
-    float t;
+
+    unsigned int delta;
     float t1 = glfwGetTime();
     while (!glfwWindowShouldClose(pWindow))
     {   
         glClear(GL_COLOR_BUFFER_BIT);
 
         float t2 = glfwGetTime();
-        t = t2 - t1;
+        delta = static_cast<unsigned int>((t2 - t1) * 1000);
         t1 = glfwGetTime();
-        //std::cout << static_cast<unsigned int>(t * 1000) << std::endl;
 
 
-        
-        sp->set_position(glm::vec2(100 * sin(glfwGetTime()) + 100, 100 * cos(glfwGetTime()) + 100));
-        sp->set_rotate(360 * sin(glfwGetTime()));
-        sp->render();
+        //animatedSprite->set_position(glm::vec2(40 * cos(glfwGetTime()) + 200, 200));
+        animatedSprite->update(delta);
+        animatedSprite->render();
 
-        zxc.update(static_cast<unsigned int>(t * 1000));
-        zxc.render();
-        zxc.set_position(glm::vec2(100 * sin(glfwGetTime()) + 100, 100 * -cos(glfwGetTime()) + 100));
+
 
 
         /* Swap front and back buffers */

@@ -9,11 +9,13 @@ add_executable(SimpleGame
 	src/Resources/ResourceManager.hpp
 	src/Render/ShaderProgram.hpp
 	src/Render/Sprite.hpp
+	src/Render/AnimatedSprite.hpp
 	src/Render/Texture2D.hpp
 
 
 	src/Render/ShaderProgram.cpp
 	src/Render/Sprite.cpp
+	src/Render/AnimatedSprite.cpp
 	src/Render/Texture2D.cpp
 	src/Resources/ResourceManager.cpp
 	

@@ -9,6 +9,8 @@
 #include "Render/Sprite.hpp"
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Render/AnimatedSprite.hpp"
+
 
 GLfloat point[] = {
      0.0f,  0.5f, 0.0f,
@@ -87,20 +89,36 @@ int main(const int argc, const char** argv)
     auto tex = ResourceManager::load_texture("tex", "res/Textures/Objects/Basic_Grass_Biom_things.png");
 
 
+
+
     std::vector<std::string> sub_textures_names{
         "1",
         "2",
         "3",
         "4",
         "5",
-        "6"
+        "6",
+        "7",
+        "8",
+        "9"
     };
+
+    std::vector<std::string> qwe{
+        "6",
+        "7",
+        "8",
+        "9"
+    };
+
 
     auto atlas = ResourceManager::load_texture_atlas("defaultAtlas", "res/Textures/Objects/Basic_Grass_Biom_things.png", sub_textures_names, 16, 16);
 
     auto sp = ResourceManager::load_sprite("test_sprite", "default_shader", "defaultAtlas", 100, 100, "6");
     sp->set_position(glm::vec2(100, 100));
     sp->set_scale(glm::vec2(100, 100));
+
+
+    auto zxc = Render::AnimatedSprite("defaultAtlas", qwe, "default_shader", 500, glm::vec2(100, 100), glm::vec2(100, 100));
 
     GLuint points_vbo = 0;
     glGenBuffers(1, &points_vbo);
@@ -132,17 +150,28 @@ int main(const int argc, const char** argv)
     shader->set_matrix4("projection", projectionMatrix);
 
     glfwSwapInterval(1);
+
+    float t;
+    float t1 = glfwGetTime();
     while (!glfwWindowShouldClose(pWindow))
     {   
-        /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
+
+        float t2 = glfwGetTime();
+        t = t2 - t1;
+        t1 = glfwGetTime();
+        //std::cout << static_cast<unsigned int>(t * 1000) << std::endl;
 
 
         
         sp->set_position(glm::vec2(100 * sin(glfwGetTime()) + 100, 100 * cos(glfwGetTime()) + 100));
+        sp->set_rotate(360 * sin(glfwGetTime()));
         sp->render();
 
-        
+        zxc.update(static_cast<unsigned int>(t * 1000));
+        zxc.render();
+        zxc.set_position(glm::vec2(100 * sin(glfwGetTime()) + 100, 100 * -cos(glfwGetTime()) + 100));
+
 
         /* Swap front and back buffers */
         glfwSwapBuffers(pWindow);

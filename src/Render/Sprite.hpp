@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <memory>
 #include <glm/vec2.hpp>
-
+#include <string>
 
 namespace Render
 {
@@ -22,7 +22,7 @@ namespace Render
 		Sprite(Sprite&& sprite) noexcept;
 		Sprite& operator=(Sprite&& sprite) noexcept;
 
-		void render() const;
+		virtual void render() const;
 
 		void set_position(const glm::vec2& pos);
 		void set_scale(const glm::vec2& scale);
@@ -34,7 +34,7 @@ namespace Render
 		Sprite(const Sprite&) = delete;
 		Sprite& operator=(const Sprite&) = delete;
 
-	private:
+	protected:
 		std::shared_ptr<Texture2D> m_pTexture;
 		std::shared_ptr<ShaderProgram> m_pShader;
 		glm::vec2 m_pos;

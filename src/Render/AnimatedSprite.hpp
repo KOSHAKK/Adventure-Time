@@ -1,43 +1,34 @@
 #pragma once
+#include "Sprite.hpp"
+
+#include <map>
 #include <vector>
-#include <string>
-#include <glm/vec2.hpp>
-#include <memory>
 
-namespace Render
-{
-	class Sprite;
+namespace Render {
 
-	class AnimatedSprite
-	{
-	public:
-		AnimatedSprite(const std::string& atlas_name,
-					   const std::vector<std::string>& sub_textures_name,
-					   const std::string& shader_program_name,
-					   const unsigned int delay_ms, 
-					   const glm::vec2& position, 
-					   const glm::vec2& size, 
-					   const float rotate = 0.f);
+    class AnimatedSprite : public Sprite {
+    public:
+        AnimatedSprite(std::shared_ptr<Texture2D> pTexture,
+            std::string initialSubTexture,
+            std::shared_ptr<ShaderProgram> pShaderProgram,
+            const glm::vec2& position = glm::vec2(0.f),
+            const glm::vec2& size = glm::vec2(1.f),
+            const float rotation = 0.f);
 
-		void render() const;
+        void insertState(std::string state, std::vector<std::pair<std::string, uint64_t>> subTexturesDuration);
 
-		void update(const unsigned int delta_time);
+        void render() const override;
 
-		void set_position(const glm::vec2& pos);
-		void set_size(const glm::vec2& size);
-		void set_rotate(const float rotate);
+        void setState(const std::string& newState);
 
+        void update(const uint64_t delta);
 
-	private:
-		unsigned int m_current_sprite = 0;
-		std::vector<std::shared_ptr<Sprite>> m_sprites;
+    private:
+        std::map<std::string, std::vector<std::pair<std::string, uint64_t>>> m_statesMap;
+        size_t m_currentFrame = 0;
+        uint64_t m_currentAnimationTime = 0;
+        std::map<std::string, std::vector<std::pair<std::string, uint64_t>>>::const_iterator m_pCurrentAnimationDurations;
+        mutable bool m_dirty = false;
+    };
 
-		unsigned int m_elapsed_time = 0;
-
-		unsigned int m_delay;
-		glm::vec2 m_position;
-		glm::vec2 m_size;
-		float m_rotate;
-	};
-	
 }

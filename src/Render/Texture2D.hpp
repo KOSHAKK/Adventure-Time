@@ -30,7 +30,7 @@ namespace Render
 				  const GLuint height, 
 				  const unsigned char* data, 
 				  const unsigned int channels,
-				  const GLenum filter = GL_NEAREST, 
+				  const GLenum filter =  GL_NEAREST,
 				  const GLenum wrapMode = GL_CLAMP_TO_EDGE);
 		Texture2D() = delete;
 		Texture2D(const Texture2D&) = delete;

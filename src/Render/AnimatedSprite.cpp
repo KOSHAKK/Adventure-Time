@@ -1,72 +1,85 @@
 #include "AnimatedSprite.hpp"
-#include "Sprite.hpp"
-#include "../Resources/ResourceManager.hpp"
+#include "Texture2D.hpp"
+
 #include <iostream>
 
+namespace Render {
 
-namespace Render
-{
-	AnimatedSprite::AnimatedSprite(const std::string& atlas_name,
-								   const std::vector<std::string>& sub_textures_name,
-								   const std::string& shader_program_name,
-								   const unsigned int delay_ms,
-								   const glm::vec2& position,
-								   const glm::vec2& size,
-								   const float rotate)
-		: m_delay(delay_ms),
-		m_position(position),
-		m_size(size),
-		m_rotate(rotate)
-	{
-		//m_sprites.resize(sub_textures_name.size());
+    AnimatedSprite::AnimatedSprite(std::shared_ptr<Texture2D> pTexture,
+        std::string initialSubTexture,
+        std::shared_ptr<ShaderProgram> pShaderProgram,
+        const glm::vec2& position,
+        const glm::vec2& size,
+        const float rotation)
+        : Sprite(pTexture, pShaderProgram, initialSubTexture, position, size, rotation)
+    {
+        m_pCurrentAnimationDurations = m_statesMap.end();
+    }
 
-		for (const auto& curr_name : sub_textures_name)
-		{
-			auto sp = ResourceManager::load_sprite(curr_name, shader_program_name, atlas_name, m_size.x, m_size.y, curr_name);
-			sp->set_position(m_position);
-			sp->set_rotate(m_rotate);
-			m_sprites.emplace_back(sp);
-		}
-	}
+    void AnimatedSprite::insertState(std::string state, std::vector<std::pair<std::string, uint64_t>> subTexturesDuration)
+    {
+        m_statesMap.emplace(std::move(state), std::move(subTexturesDuration));
+    }
 
-	void AnimatedSprite::render() const
-	{
-		m_sprites[m_current_sprite]->render();
-	}
-	void AnimatedSprite::update(const unsigned int delta_time)
-	{
-		if (m_elapsed_time >= m_delay)
-		{
-			m_elapsed_time = 0;
-			m_current_sprite++;
-		}
+    void AnimatedSprite::setState(const std::string& newState)
+    {
+        auto it = m_statesMap.find(newState);
+        if (it == m_statesMap.end())
+        {
+            std::cout << "Can't find animation state: " << newState << std::endl;
+            return;
+        }
 
-		if (m_current_sprite >= m_sprites.size() - 1)
-		{
-			m_current_sprite = 0;
-		}
+        if (it != m_pCurrentAnimationDurations)
+        {
+            m_currentAnimationTime = 0;
+            m_currentFrame = 0;
+            m_pCurrentAnimationDurations = it;
+            m_dirty = true;
+        }
+    }
 
-		m_elapsed_time += delta_time;
-	}
-	void AnimatedSprite::set_position(const glm::vec2& pos)
-	{
-		for (auto& curr : m_sprites)
-		{
-			curr->set_position(pos);
-		}
-	}
-	void AnimatedSprite::set_size(const glm::vec2& size)
-	{
-		for (auto& curr : m_sprites)
-		{
-			curr->set_scale(size);
-		}
-	}
-	void AnimatedSprite::set_rotate(const float rotate)
-	{
-		for (auto& curr : m_sprites)
-		{
-			curr->set_rotate(rotate);
-		}
-	}
+    void AnimatedSprite::update(const uint64_t delta)
+    {
+        if (m_pCurrentAnimationDurations != m_statesMap.end())
+        {
+            m_currentAnimationTime += delta;
+            while (m_currentAnimationTime >= m_pCurrentAnimationDurations->second[m_currentFrame].second)
+            {
+                m_currentAnimationTime -= m_pCurrentAnimationDurations->second[m_currentFrame].second;
+                ++m_currentFrame;
+                std::cout << m_currentFrame << std::endl;
+                m_dirty = true;
+                if (m_currentFrame == m_pCurrentAnimationDurations->second.size())
+                {
+                    m_currentFrame = 0;
+                }
+            }
+        }
+    }
+
+    void AnimatedSprite::render() const
+    {
+        if (m_dirty)
+        {
+            auto subTexture = m_pTexture->get_subTexture(m_pCurrentAnimationDurations->second[m_currentFrame].first);
+
+            const GLfloat textureCoords[] = {
+                // U  V
+                subTexture.left_bottom.x, subTexture.left_bottom.y,
+                subTexture.left_bottom.x, subTexture.right_top.y,
+                subTexture.right_top.x,   subTexture.right_top.y,
+
+                subTexture.right_top.x,   subTexture.right_top.y,
+                subTexture.right_top.x,   subTexture.left_bottom.y,
+                subTexture.left_bottom.x, subTexture.left_bottom.y
+            };
+            
+            glBindBuffer(GL_ARRAY_BUFFER, m_VBO_tex_coords);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(textureCoords), &textureCoords);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            m_dirty = false;
+        }
+        Sprite::render();
+    }
 }

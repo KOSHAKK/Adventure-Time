@@ -53,16 +53,17 @@ public:
 															     const unsigned int SubTextureHeight);
 
 
-	static std::shared_ptr<Render::AnimatedSprite> load_animated_sprite(const std::string& name,
-																		const std::string& texture_altas_name,
-																		const std::string& shader_name,
-																		const std::vector<std::string>& sub_textures_names,
-																		const unsigned int delay_ms,
-																		const glm::vec2& position = { 0.f, 0.f },
-																		const glm::vec2& size = { 100.f, 100.f },
-																		const float rotate = 0.f);
-	
-	static std::shared_ptr<Render::AnimatedSprite> get_animated_sprite(const std::string& name);
+	static std::shared_ptr<Render::AnimatedSprite> load_animated_sprite(const std::string& spriteName,
+		const std::string& textureName,
+		const std::string& shaderName,
+		const unsigned int spriteWidth,
+		const unsigned int spriteHeight,
+		const std::string& subTextureName = "default");
+
+
+	static std::shared_ptr<Render::AnimatedSprite> get_animated_sprite(const std::string& spriteName);
+
+
 private:
 	static std::string m_executable_path;
 	static shaderMap m_shader_programs;

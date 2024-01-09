@@ -114,6 +114,10 @@ std::shared_ptr<Render::Sprite> ResourceManager::load_sprite(const std::string& 
 		glm::vec2(0.f, 0.f),
 		glm::vec2(sprite_width, sprite_height))).first->second;
 
+
+
+
+
 	return newSprite;
 }
 
@@ -162,27 +166,37 @@ std::shared_ptr<Render::Texture2D> ResourceManager::load_texture_atlas(const std
 	return pTex;
 }
 
-
-
-std::shared_ptr<Render::AnimatedSprite> ResourceManager::load_animated_sprite(const std::string& name, 
-																			  const std::string& texture_altas_name, 
-																			  const std::string& shader_name, 
-																			  const std::vector<std::string>& sub_textures_names, 
-																			  const unsigned int delay_ms,
-																			  const glm::vec2& position, 
-																			  const glm::vec2& size, 
-																			  const float rotate)
+std::shared_ptr<Render::AnimatedSprite> ResourceManager::load_animated_sprite(const std::string& spriteName, const std::string& textureName, const std::string& shaderName, const unsigned int spriteWidth, const unsigned int spriteHeight, const std::string& subTextureName)
 {
-	return m_animated_sprites.emplace(name, std::make_shared<Render::AnimatedSprite>(texture_altas_name, sub_textures_names, shader_name, delay_ms, position, size, rotate)).first->second;
-}
-
-std::shared_ptr<Render::AnimatedSprite> ResourceManager::get_animated_sprite(const std::string& name)
-{
-	auto& it = m_animated_sprites.find(name);
-	if (it == m_animated_sprites.end())
+	auto pTexture = get_texture(textureName);
+	if (!pTexture)
 	{
-		std::cerr << "Can't find animated sprite with name: " << name << std::endl;
-		return nullptr;
+		std::cerr << "Can't find the texture: " << textureName << " for the sprite: " << spriteName << std::endl;
 	}
-	return it->second;
+
+	auto pShader = get_shader_program(shaderName);
+	if (!pShader)
+	{
+		std::cerr << "Can't find the shader: " << shaderName << " for the sprite: " << spriteName << std::endl;
+	}
+
+	std::shared_ptr<Render::AnimatedSprite> newSprite = m_animated_sprites.emplace(textureName, std::make_shared<Render::AnimatedSprite>(pTexture,
+		subTextureName,
+		pShader,
+		glm::vec2(0.f, 0.f),
+		glm::vec2(spriteWidth, spriteHeight))).first->second;
+
+	return newSprite;
 }
+
+std::shared_ptr<Render::AnimatedSprite> ResourceManager::get_animated_sprite(const std::string& spriteName)
+{
+	auto it = m_animated_sprites.find(spriteName);
+	if (it != m_animated_sprites.end())
+	{
+		return it->second;
+	}
+	std::cerr << "Can't find animated sprite: " << spriteName << std::endl;
+	return nullptr;
+}
+

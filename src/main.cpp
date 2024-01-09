@@ -26,7 +26,7 @@ GLfloat texture_coords[] = {
 
 
 
-glm::vec2 window_size(640, 480);
+glm::vec2 window_size(640*2, 480*2);
 
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
@@ -45,6 +45,8 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
 
 int main(const int argc, const char** argv)
 {
+
+
     ResourceManager::init(argv[0]);
     /* Initialize the library */
     if (!glfwInit())
@@ -84,9 +86,7 @@ int main(const int argc, const char** argv)
 
     glClearColor(1, 1, 0, 1);
 
-
-
-
+    
 
     std::vector<std::string> sub_textures_names{
         "1",
@@ -96,25 +96,49 @@ int main(const int argc, const char** argv)
         "5",
         "6",
         "7",
-        "8"
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24"
     };
-
-
-    std::vector<std::string> qwe{
-        "5",
-        "6",
-        "7",
-        "8"
-    };
-
 
     auto shader = ResourceManager::load_shader_program("default_shader", "res/Shaders/vs.vert", "res/Shaders/fs.frag");
 
-    auto atlas = ResourceManager::load_texture_atlas("defaultAtlas", "res/Textures/Characters/Free Chicken Sprites.png", sub_textures_names, 16, 16);
+    auto atlas = ResourceManager::load_texture_atlas("defaultAtlas", "res/Textures/Main Characters/Virtual Guy/DinoSprites - doux.png", sub_textures_names, 24, 24);
 
-    auto animatedSprite = ResourceManager::load_animated_sprite("anim", "defaultAtlas", "default_shader", qwe, 200);
+    ResourceManager::load_sprite("NewSpite", "default_shader", "defaultAtlas", 78, 58, "1");
+
+    
+
+    auto animatedSprite = ResourceManager::load_animated_sprite("zxc1", "defaultAtlas", "default_shader", 200, 200, "1");
+    animatedSprite->set_position(glm::vec2(300, 300));
+    std::vector<std::pair<std::string, uint64_t>> state;
+    state.emplace_back(std::make_pair<std::string, uint64_t>("5", 100));
+    state.emplace_back(std::make_pair<std::string, uint64_t>("6", 100));
+    state.emplace_back(std::make_pair<std::string, uint64_t>("7", 100));
+    state.emplace_back(std::make_pair<std::string, uint64_t>("8", 100));
+    state.emplace_back(std::make_pair<std::string, uint64_t>("9", 100));
+    state.emplace_back(std::make_pair<std::string, uint64_t>("10", 100));
+    state.emplace_back(std::make_pair<std::string, uint64_t>("11", 100));
 
 
+    animatedSprite->insertState("st", state);
+    animatedSprite->setState("st");
+
+   
     GLuint points_vbo = 0;
     glGenBuffers(1, &points_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
@@ -156,7 +180,6 @@ int main(const int argc, const char** argv)
         float t2 = glfwGetTime();
         delta = static_cast<unsigned int>((t2 - t1) * 1000);
         t1 = glfwGetTime();
-
 
         //animatedSprite->set_position(glm::vec2(40 * cos(glfwGetTime()) + 200, 200));
         animatedSprite->update(delta);

@@ -20,6 +20,13 @@ add_executable(SimpleGame
 	src/Resources/ResourceManager.cpp
 	
 	
+	
+	src/Game/Game.hpp
+	src/Game/Game.cpp
+	
+	
+	src/System/Keys.hpp
+	
 	# lib
 	src/Resources/stb_image.hpp
 )

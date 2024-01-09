@@ -48,7 +48,6 @@ namespace Render {
             {
                 m_currentAnimationTime -= m_pCurrentAnimationDurations->second[m_currentFrame].second;
                 ++m_currentFrame;
-                std::cout << m_currentFrame << std::endl;
                 m_dirty = true;
                 if (m_currentFrame == m_pCurrentAnimationDurations->second.size())
                 {

@@ -43,22 +43,25 @@ void Game::init(const glm::vec2& window_size)
 
     auto shader = ResourceManager::load_shader_program("default_shader", "res/Shaders/vs.vert", "res/Shaders/fs.frag");
 
-    auto atlas = ResourceManager::load_texture_atlas("defaultAtlas", "res/Textures/Main Characters/Virtual Guy/DinoSprites - doux.png", sub_textures_names, 24, 24);
+    auto atlas = ResourceManager::load_texture_atlas("defaultAtlas", "res/Textures/rofls/64X128_Walking_Free.png", sub_textures_names, 64, 128);
 
-    ResourceManager::load_sprite("NewSpite", "default_shader", "defaultAtlas", 78, 58, "1");
+    ResourceManager::load_sprite("NewSpite", "default_shader", "defaultAtlas", 64, 128);
 
 
 
-    animatedSprite = ResourceManager::load_animated_sprite("zxc1", "defaultAtlas", "default_shader", 200, 200, "1");
+    animatedSprite = ResourceManager::load_animated_sprite("zxc1", "defaultAtlas", "default_shader", 64*3, 128*3);
     animatedSprite->set_position(glm::vec2(300, 300));
     std::vector<std::pair<std::string, uint64_t>> state;
+    state.emplace_back(std::make_pair<std::string, uint64_t>("1", 100));
+    state.emplace_back(std::make_pair<std::string, uint64_t>("2", 100));
+    state.emplace_back(std::make_pair<std::string, uint64_t>("3", 100));
+    state.emplace_back(std::make_pair<std::string, uint64_t>("4", 100));
     state.emplace_back(std::make_pair<std::string, uint64_t>("5", 100));
     state.emplace_back(std::make_pair<std::string, uint64_t>("6", 100));
     state.emplace_back(std::make_pair<std::string, uint64_t>("7", 100));
     state.emplace_back(std::make_pair<std::string, uint64_t>("8", 100));
     state.emplace_back(std::make_pair<std::string, uint64_t>("9", 100));
     state.emplace_back(std::make_pair<std::string, uint64_t>("10", 100));
-    state.emplace_back(std::make_pair<std::string, uint64_t>("11", 100));
 
 
     animatedSprite->insertState("st", state);

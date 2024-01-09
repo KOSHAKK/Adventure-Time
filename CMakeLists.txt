@@ -23,6 +23,8 @@ add_executable(SimpleGame
 	
 	src/Game/Game.hpp
 	src/Game/Game.cpp
+	src/Game/IGameObject.hpp
+	src/Game/IGameObject.cpp
 	
 	
 	src/System/Keys.hpp

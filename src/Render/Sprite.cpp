@@ -3,6 +3,7 @@
 #include "Sprite.hpp"
 #include <glm/mat4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
+#include <iostream>
 
 
 namespace Render
@@ -103,10 +104,10 @@ namespace Render
 
 		return *this;
 	}
-	
 	void Sprite::render() const
 	{
 		m_pShader->use();
+
 
 		glm::mat4 model(1.f);
 
@@ -139,6 +140,21 @@ namespace Render
 	void Sprite::set_rotate(const float rotate)
 	{
 		m_rotation = rotate;
+	}
+
+	glm::vec2 Sprite::get_position() const
+	{
+		return m_pos;
+	}
+
+	glm::vec2 Sprite::get_scale() const
+	{
+		return m_scale;
+	}
+
+	float Sprite::get_rotate() const
+	{
+		return m_rotation;
 	}
 
 	Sprite::~Sprite()

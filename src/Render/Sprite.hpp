@@ -27,7 +27,9 @@ namespace Render
 		void set_position(const glm::vec2& pos);
 		void set_scale(const glm::vec2& scale);
 		void set_rotate(const float rotate);
-
+		glm::vec2 get_position() const;
+		glm::vec2 get_scale() const;
+		float get_rotate() const;
 
 		~Sprite();
 

@@ -63,6 +63,7 @@ namespace Render {
         {
             auto subTexture = m_pTexture->get_subTexture(m_pCurrentAnimationDurations->second[m_currentFrame].first);
 
+
             const GLfloat textureCoords[] = {
                 // U  V
                 subTexture.left_bottom.x, subTexture.left_bottom.y,

@@ -139,31 +139,28 @@ std::shared_ptr<Render::Texture2D> ResourceManager::load_texture_atlas(const std
 																	   const unsigned int SubTextureWidht, 
 																	   const unsigned int SubTextureHeight)
 {
-	auto pTex = load_texture(texture_name, path);
-	if (pTex)
+	auto pTexture = load_texture(std::move(texture_name), std::move(path));
+	if (pTexture)
 	{
-		const unsigned int texture_width = pTex->get_width();
-		const unsigned int texture_height = pTex->get_height();
-
-		unsigned int current_offset_x = 0;
-		unsigned int current_offset_y = texture_height;
-
-		for (const auto& current_name : sub_textures_name)
+		const unsigned int textureWidth = pTexture->get_width();
+		const unsigned int textureHeight = pTexture->get_height();
+		unsigned int currentTextureOffsetX = 0;
+		unsigned int currentTextureOffsetY = textureHeight;
+		for (auto& currentSubTextureName : sub_textures_name)
 		{
-			glm::vec2 left_bottomUV(static_cast<float>(current_offset_x) / texture_width, static_cast<float>(current_offset_y - SubTextureWidht) / texture_height);
-			glm::vec2 right_topUV(static_cast<float>(current_offset_x + SubTextureWidht) / texture_width, static_cast<float>(current_offset_y) / texture_height);
+			glm::vec2 leftBottomUV(static_cast<float>(currentTextureOffsetX) / textureWidth, static_cast<float>(currentTextureOffsetY - SubTextureHeight) / textureHeight);
+			glm::vec2 rightTopUV(static_cast<float>(currentTextureOffsetX + SubTextureWidht) / textureWidth, static_cast<float>(currentTextureOffsetY) / textureHeight);
+			pTexture->add_subTexture(std::move(currentSubTextureName), leftBottomUV, rightTopUV);
 
-			pTex->add_subTexture(current_name, left_bottomUV, right_topUV);
-
-			current_offset_x += SubTextureWidht;
-			if (current_offset_x >= texture_width)
+			currentTextureOffsetX += SubTextureWidht;
+			if (currentTextureOffsetX >= textureWidth)
 			{
-				current_offset_y -= SubTextureHeight;
-				current_offset_x = 0;
+				currentTextureOffsetX = 0;
+				currentTextureOffsetY -= SubTextureHeight;
 			}
-		}	
+		}
 	}
-	return pTex;
+	return pTexture;
 }
 
 std::shared_ptr<Render::AnimatedSprite> ResourceManager::load_animated_sprite(const std::string& spriteName, const std::string& textureName, const std::string& shaderName, const unsigned int spriteWidth, const unsigned int spriteHeight, const std::string& subTextureName)

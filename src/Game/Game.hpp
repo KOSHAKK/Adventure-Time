@@ -26,4 +26,7 @@ private:
 
 	std::unique_ptr<ILevel> level_1;
 
+
+	std::shared_ptr<Render::AnimatedSprite> zxc;
+
 };

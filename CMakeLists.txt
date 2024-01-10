@@ -33,6 +33,8 @@ add_executable(SimpleGame
 	
 	src/Game/MyceliumBlock.hpp
 	src/Game/MyceliumBlock.cpp
+	src/Game/NinjaFrog.hpp
+	src/Game/NinjaFrog.cpp
 	
 	src/System/Keys.hpp
 	

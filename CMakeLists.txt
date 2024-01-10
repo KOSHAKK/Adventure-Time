@@ -11,7 +11,7 @@ add_executable(SimpleGame
 	src/Render/Sprite.hpp
 	src/Render/AnimatedSprite.hpp
 	src/Render/Texture2D.hpp
-
+	
 
 	src/Render/ShaderProgram.cpp
 	src/Render/Sprite.cpp
@@ -25,7 +25,14 @@ add_executable(SimpleGame
 	src/Game/Game.cpp
 	src/Game/IGameObject.hpp
 	src/Game/IGameObject.cpp
+	src/Game/ILevel.hpp
+	src/Game/ILevel.cpp
 	
+	src/Game/Level_1.cpp
+	src/Game/Level_1.hpp
+	
+	src/Game/MyceliumBlock.hpp
+	src/Game/MyceliumBlock.cpp
 	
 	src/System/Keys.hpp
 	

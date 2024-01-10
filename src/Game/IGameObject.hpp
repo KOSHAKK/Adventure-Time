@@ -11,7 +11,7 @@ namespace Render
 class IGameObject
 {
 public:
-	void virtual render() const = 0;
+	void virtual render() const;
 	void virtual update(const uint64_t delta) = 0;
 	glm::vec2 virtual get_pos() const;
 	glm::vec2 virtual get_size() const;
@@ -20,6 +20,6 @@ public:
 	void virtual set_size(const glm::vec2& size);
 	void virtual set_pos(const glm::vec2& position);
 
-private:
+protected:
 	std::shared_ptr<Render::Sprite> m_sprite;
 };

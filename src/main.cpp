@@ -47,7 +47,7 @@ int main(const int argc, const char** argv)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* pWindow = glfwCreateWindow(window_size.x, window_size.y, "Simple Game", nullptr, nullptr);
+    GLFWwindow* pWindow = glfwCreateWindow(window_size.x, window_size.y, "Adventure Time", nullptr, nullptr);
     if (!pWindow)
     {
         std::cout << "glfwCreateWindow failed!" << std::endl;
@@ -93,15 +93,12 @@ int main(const int argc, const char** argv)
 
 
         game->update(delta);
+        game->render();
 
 
 
 
-
-        /* Swap front and back buffers */
         glfwSwapBuffers(pWindow);
-
-        /* Poll for and process events */
         glfwPollEvents();
     }
 

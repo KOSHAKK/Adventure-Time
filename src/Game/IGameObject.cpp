@@ -1,6 +1,11 @@
 #include "IGameObject.hpp"
 #include "../Render/Sprite.hpp"
 
+void IGameObject::render() const
+{
+    m_sprite->render();
+}
+
 glm::vec2 IGameObject::get_pos() const
 {
     return m_sprite->get_position();

@@ -6,19 +6,31 @@
 void ILevel::render()
 {
 	for (auto& obj : m_static_game_objects) {
-		obj->render();
+		if (obj)
+		{
+			obj->render();
+		}
 	}
 	for (auto& enemy : m_enemies) {
-		enemy->render();
+		if (enemy)
+		{
+			enemy->render();
+		}
 	}
 }
 
 void ILevel::update(const uint64_t delta)
 {
 	for (auto& obj : m_static_game_objects) {
-		obj->update(delta);
+		if (obj)
+		{
+			obj->update(delta);
+		}
 	}
 	for (auto& enemy : m_enemies) {
-		enemy->update(delta);
+		if (enemy)
+		{
+			enemy->update(delta);
+		}
 	}
 }

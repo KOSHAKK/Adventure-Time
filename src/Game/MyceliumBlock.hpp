@@ -20,7 +20,7 @@ public:
 		MYCELIUM_DIRT_2,
 	};
 
-	MyceliumBlock(const glm::vec2& pos, const glm::vec2& scale, const EType block_type = EType::MYCELIUM_DIRT_1, const float rotate = 0.f);
+	MyceliumBlock(const EType block_type, const glm::vec2& pos = glm::vec2(0.f), const glm::vec2& scale = glm::vec2(0.f), const float rotate = 0.f);
 	void update(const uint64_t delta) override {	};
 	void render() const override;
 	glm::vec2 get_pos() const override;

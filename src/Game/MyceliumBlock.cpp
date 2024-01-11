@@ -4,7 +4,7 @@
 #include "../Render/Sprite.hpp"
 #include <string>
 
-MyceliumBlock::MyceliumBlock(const glm::vec2& pos, const glm::vec2& scale, const EType block_type, const float rotate)
+MyceliumBlock::MyceliumBlock(const EType block_type, const glm::vec2& pos, const glm::vec2& scale, const float rotate)
 	: m_type(block_type)
 {
 	static unsigned int counter = 0;

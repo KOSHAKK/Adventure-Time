@@ -2,6 +2,7 @@
 #include "../Resources/ResourceManager.hpp"
 #include "MyceliumBlock.hpp"
 
+
 void Level_1::init()
 {
 
@@ -54,10 +55,26 @@ void Level_1::init()
 
     m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 300), glm::vec2(100, 100));
 
-
-    m_static_game_objects.emplace_back(std::make_shared<MyceliumBlock>(glm::vec2(100.f, 100.f), glm::vec2(64, 64), MyceliumBlock::EType::MYCELIUM_BLOCK_1));
-    m_static_game_objects.emplace_back(std::make_shared<MyceliumBlock>(glm::vec2(100.f+64, 100.f), glm::vec2(64 , 64), MyceliumBlock::EType::MYCELIUM_BLOCK_2));
-    m_static_game_objects.emplace_back(std::make_shared<MyceliumBlock>(glm::vec2(100.f+128, 100.f), glm::vec2(64, 64), MyceliumBlock::EType::MYCELIUM_BLOCK_3));
+    unsigned int offsetX = 0;
+    unsigned int offsetY = get_height() - 64;
+    for (size_t i = 0; i < m_map.size(); i++)
+    {
+        offsetY -= BLOCK_SIZE;
+        for (size_t j = 0; j < m_map[i].size(); j++)
+        {
+            m_static_game_objects.emplace_back(get_object_from_decsription(m_map[i][j]));
+            if (m_static_game_objects.back())
+            {
+                m_static_game_objects.back()->set_pos(glm::vec2(offsetX, offsetY));
+                m_static_game_objects.back()->set_size(glm::vec2(BLOCK_SIZE, BLOCK_SIZE));
+            }
+            offsetX += BLOCK_SIZE;
+            if (offsetX >= get_width())
+            {
+                offsetX = 0;
+            }
+        }
+    }
 } 
 
 void Level_1::render()
@@ -75,5 +92,20 @@ void Level_1::update(const uint64_t delta)
     if (m_player)
     {
         m_player->update(delta);
+    }
+}
+
+std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char description)
+{
+    switch (description)
+    {
+    case 'Q':
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_1);
+    case 'W':
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_2);
+    case 'E':
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_3);
+    default:
+        return nullptr;
     }
 }

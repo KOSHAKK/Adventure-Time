@@ -14,7 +14,7 @@
 
 std::unique_ptr<Game> game = std::make_unique<Game>();
 
-glm::uvec2 window_size(900, 700);
+glm::uvec2 window_size(64 * 3 * 6, 64 * 3 * 4 - 64);
 
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {

@@ -24,6 +24,7 @@ namespace Render
 
 		void set_int(const std::string& uniform_name, const int value) const;
 		void set_matrix4(const std::string& uniform_name, const glm::mat4& matrix);
+		void set_bool(const std::string& uniform_name, const bool value) const;
 	private:
 		GLuint m_id = 0;
 		bool m_isCompiled = false;

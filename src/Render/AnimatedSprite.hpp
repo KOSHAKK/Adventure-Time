@@ -17,7 +17,7 @@ namespace Render {
 
         void insertState(std::string state, std::vector<std::pair<std::string, uint64_t>> subTexturesDuration);
 
-        void render() const override;
+        void render(const bool is_mirror = false) const override;
 
         void setState(const std::string& newState);
 

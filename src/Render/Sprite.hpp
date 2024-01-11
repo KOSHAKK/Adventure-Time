@@ -22,7 +22,7 @@ namespace Render
 		Sprite(Sprite&& sprite) noexcept;
 		Sprite& operator=(Sprite&& sprite) noexcept;
 
-		virtual void render() const;
+		virtual void render(const bool is_mirror = false) const;
 
 		void set_position(const glm::vec2& pos);
 		void set_scale(const glm::vec2& scale);

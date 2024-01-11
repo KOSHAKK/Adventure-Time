@@ -4,11 +4,8 @@
 #include <glm/vec2.hpp>
 #include "MyceliumBlock.hpp"
 #include "ILevel.hpp"
+#include "NinjaFrog.hpp"
 
-namespace Render
-{
-	class AnimatedSprite;
-};
 
 class Game
 {
@@ -26,7 +23,5 @@ private:
 
 	std::unique_ptr<ILevel> level_1;
 
-
-	std::shared_ptr<Render::AnimatedSprite> zxc;
 
 };

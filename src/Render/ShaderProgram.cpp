@@ -99,4 +99,8 @@ namespace Render
     {
         glUniformMatrix4fv(glGetUniformLocation(m_id, uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
     }
+    void ShaderProgram::set_bool(const std::string& uniform_name, const bool value) const
+    {
+        glUniform1i(glGetUniformLocation(m_id, uniform_name.c_str()), value);
+    }
 }

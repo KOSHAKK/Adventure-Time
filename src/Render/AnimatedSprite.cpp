@@ -57,7 +57,7 @@ namespace Render {
         }
     }
 
-    void AnimatedSprite::render() const
+    void AnimatedSprite::render(const bool is_mirror) const
     {
         if (m_dirty)
         {
@@ -80,6 +80,6 @@ namespace Render {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             m_dirty = false;
         }
-        Sprite::render();
+        Sprite::render(is_mirror);
     }
 }

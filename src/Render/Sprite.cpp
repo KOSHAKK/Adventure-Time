@@ -104,12 +104,18 @@ namespace Render
 
 		return *this;
 	}
-	void Sprite::render() const
+	void Sprite::render(const bool is_mirror) const
 	{
 		m_pShader->use();
 
+		m_pShader->set_bool("is_mirror", is_mirror);
 
 		glm::mat4 model(1.f);
+
+
+
+
+
 
 		model = glm::translate(model, glm::vec3(m_pos, 0.f));
 		model = glm::translate(model, glm::vec3(0.5f * m_scale.x, 0.5f * m_scale.y, 0.f));

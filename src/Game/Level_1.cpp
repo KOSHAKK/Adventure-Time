@@ -4,12 +4,22 @@
 
 void Level_1::init()
 {
+
     std::vector<std::string> terrain_sub_textures_names{
-        "empty3x1_1",
-        "empty3x1_2",
-        "mycelium_block3x1"
+        "left_top_border",
+        "top_border",
+        "right_top_border",
+        "empty1",
+        "empty2",
+        "NONE1",
+        "mycelium_block_1",
+        "mycelium_block_2",
+        "mycelium_block_3",
+        "mycelium_dirt_1",
+        "mycelium_dirt_2",
+        "NONE2",
     };
-    ResourceManager::load_texture_atlas("terrain_atlas", "res/Textures/Terrain/Terrain (16x16).png", terrain_sub_textures_names, 48, 16);
+    ResourceManager::load_texture_atlas("terrain_atlas", "res/Textures/Terrain/Terrain (16x16).png", terrain_sub_textures_names, 16, 16);
 
     std::vector<std::string> ninja_run_sub_textures_names{
         "ninja_frog_run1",
@@ -45,8 +55,10 @@ void Level_1::init()
     m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 300), glm::vec2(100, 100));
 
 
-    m_static_game_objects.emplace_back(std::make_shared<MyceliumBlock>(glm::vec2(100.f, 100.f), glm::vec2(64*3, 64)));
-}
+    m_static_game_objects.emplace_back(std::make_shared<MyceliumBlock>(glm::vec2(100.f, 100.f), glm::vec2(64, 64), MyceliumBlock::EType::MYCELIUM_BLOCK_1));
+    m_static_game_objects.emplace_back(std::make_shared<MyceliumBlock>(glm::vec2(100.f+64, 100.f), glm::vec2(64 , 64), MyceliumBlock::EType::MYCELIUM_BLOCK_2));
+    m_static_game_objects.emplace_back(std::make_shared<MyceliumBlock>(glm::vec2(100.f+128, 100.f), glm::vec2(64, 64), MyceliumBlock::EType::MYCELIUM_BLOCK_3));
+} 
 
 void Level_1::render()
 {

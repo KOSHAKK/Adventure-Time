@@ -4,12 +4,36 @@
 #include "../Render/Sprite.hpp"
 #include <string>
 
-MyceliumBlock::MyceliumBlock(const glm::vec2& pos, const glm::vec2& scale, const float rotate)
+MyceliumBlock::MyceliumBlock(const glm::vec2& pos, const glm::vec2& scale, const EType block_type, const float rotate)
+	: m_type(block_type)
 {
 	static unsigned int counter = 0;
 	counter++;
 	
-	m_sprite = ResourceManager::load_sprite("mycelium_block" + std::to_string(counter), "default_shader", "terrain_atlas", scale.x, scale.y, "mycelium_block3x1");
+
+	switch (m_type)
+	{
+	case MyceliumBlock::EType::MYCELIUM_BLOCK_1:
+		m_sprite = ResourceManager::load_sprite("mycelium_block" + std::to_string(counter), "default_shader", "terrain_atlas", scale.x, scale.y, "mycelium_block_1");
+		break;
+	case MyceliumBlock::EType::MYCELIUM_BLOCK_2:
+		m_sprite = ResourceManager::load_sprite("mycelium_block" + std::to_string(counter), "default_shader", "terrain_atlas", scale.x, scale.y, "mycelium_block_2");
+		break;
+	case MyceliumBlock::EType::MYCELIUM_BLOCK_3:
+		m_sprite = ResourceManager::load_sprite("mycelium_block" + std::to_string(counter), "default_shader", "terrain_atlas", scale.x, scale.y, "mycelium_block_3");
+		break;
+	case MyceliumBlock::EType::MYCELIUM_DIRT_1:
+		m_sprite = ResourceManager::load_sprite("mycelium_block" + std::to_string(counter), "default_shader", "terrain_atlas", scale.x, scale.y, "mycelium_dirt_1");
+		break;
+	case MyceliumBlock::EType::MYCELIUM_DIRT_2:
+		m_sprite = ResourceManager::load_sprite("mycelium_block" + std::to_string(counter), "default_shader", "terrain_atlas", scale.x, scale.y, "mycelium_dirt_2");
+		break;
+	}
+	
+
+
+
+
 	m_sprite->set_position(pos);
 	m_sprite->set_rotate(rotate);
 }

@@ -14,13 +14,13 @@
 
 std::unique_ptr<Game> game = std::make_unique<Game>();
 
-glm::vec2 window_size(640*2, 480*2);
+glm::uvec2 window_size(900, 700);
 
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
     window_size.x = width;
     window_size.y = height;
-    glViewport(0, 0, window_size.x, window_size.y);
+    game->set_window_size(window_size);
 }
 
 void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int mode)

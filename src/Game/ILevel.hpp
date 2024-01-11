@@ -11,6 +11,10 @@ public:
 	void virtual render();
 	void virtual update(const uint64_t delta);
 
+	unsigned int virtual get_width() = 0;
+	unsigned int virtual get_height() = 0;
+
+
 protected:
 	bool m_is_finish = false;
 

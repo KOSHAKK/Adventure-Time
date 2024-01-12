@@ -1,5 +1,4 @@
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 #include <iostream>
 
@@ -11,6 +10,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Render/AnimatedSprite.hpp"
 #include "Game/Game.hpp"
+#include "Physics/PhysicsEngine.hpp"
+#include "System/KeyState.hpp"
+#include "System/Keys.hpp"
+
+#include <GLFW/glfw3.h>
 
 std::unique_ptr<Game> game = std::make_unique<Game>();
 
@@ -29,7 +33,7 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
     {
         glfwSetWindowShouldClose(pWindow, GL_TRUE);
     }
-    game->set_key(key, action);
+    KeyState::set_key_state(static_cast<Keys>(key), action);
 }
 
 
@@ -74,25 +78,26 @@ int main(const int argc, const char** argv)
     
 
     ResourceManager::init(argv[0]);
+    PhysicsEngine::init();
     game->init(window_size);
 
     glfwSwapInterval(1);
 
 
     unsigned int delta;
-    float t1 = glfwGetTime();
+    float t1 = static_cast<float>(glfwGetTime());
     while (!glfwWindowShouldClose(pWindow))
     {   
         glClear(GL_COLOR_BUFFER_BIT);
 
-        float t2 = glfwGetTime();
+        float t2 = static_cast<float>(glfwGetTime());
         delta = static_cast<unsigned int>((t2 - t1) * 1000);
-        t1 = glfwGetTime();
-
+        t1 = static_cast<float>(glfwGetTime());
 
 
 
         game->update(delta);
+        PhysicsEngine::update(delta);
         game->render();
 
 

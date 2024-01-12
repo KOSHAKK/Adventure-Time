@@ -21,7 +21,7 @@ public:
 	};
 
 	MyceliumBlock(const EType block_type, const glm::vec2& pos = glm::vec2(0.f), const glm::vec2& scale = glm::vec2(0.f), const float rotate = 0.f);
-	void update(const uint64_t delta) override {	};
+	void update(const uint64_t delta) override;
 	void render() const override;
 	glm::vec2 get_pos() const override;
 	glm::vec2 get_size() const override;

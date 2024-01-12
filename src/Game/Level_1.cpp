@@ -1,10 +1,16 @@
 #include "Level_1.hpp"
 #include "../Resources/ResourceManager.hpp"
 #include "MyceliumBlock.hpp"
-
+#include "../Physics/PhysicsEngine.hpp"
+#include "../System/Keys.hpp"
+#include "../System/KeyState.hpp"
+#include <iostream>
+#include <array>
+#include <glm/vec2.hpp>
 
 void Level_1::init()
 {
+    BLOCK_SIZE = 64;
 
     std::vector<std::string> terrain_sub_textures_names{
         "left_top_border",
@@ -53,20 +59,23 @@ void Level_1::init()
     };
     ResourceManager::load_texture_atlas("ninja_frog_idle_atlas", "res/Textures/Main Characters/Ninja Frog/Idle (32x32).png", ninja_idle_sub_textures_names, 32, 32);
 
-    m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 300), glm::vec2(100, 100));
+    m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 70), glm::vec2(100, 100));
+    PhysicsEngine::addDynamicGameObject(m_player);
 
     unsigned int offsetX = 0;
-    unsigned int offsetY = get_height() - 64;
+    int offsetY = get_height() - 64;
+    
     for (size_t i = 0; i < m_map.size(); i++)
     {
         offsetY -= BLOCK_SIZE;
         for (size_t j = 0; j < m_map[i].size(); j++)
         {
-            m_static_game_objects.emplace_back(get_object_from_decsription(m_map[i][j]));
-            if (m_static_game_objects.back())
+            m_game_objects.emplace_back(get_object_from_decsription(m_map[i][j]));
+            if (m_game_objects.back())
             {
-                m_static_game_objects.back()->set_pos(glm::vec2(offsetX, offsetY));
-                m_static_game_objects.back()->set_size(glm::vec2(BLOCK_SIZE, BLOCK_SIZE));
+                PhysicsEngine::addDynamicGameObject(m_game_objects.back());
+                m_game_objects.back()->set_pos(glm::vec2(offsetX, offsetY));
+                m_game_objects.back()->set_size(glm::vec2(BLOCK_SIZE, BLOCK_SIZE));
             }
             offsetX += BLOCK_SIZE;
             if (offsetX >= get_width())
@@ -79,6 +88,11 @@ void Level_1::init()
 
 void Level_1::render()
 {
+
+    //std::cout << m_player->get_left_bottom().x << " " << m_player->get_left_bottom().y << std::endl;
+    //std::cout << m_player->get_right_top().x << " " << m_player->get_right_top().y << std::endl;
+    //std::cout << "---------------------------\n";
+
     ILevel::render();
     if (m_player)
     {
@@ -92,8 +106,28 @@ void Level_1::update(const uint64_t delta)
     if (m_player)
     {
         m_player->update(delta);
+
+        if (KeyState::get_key_state(Keys::KEY_W) || KeyState::get_key_state(Keys::KEY_S) || KeyState::get_key_state(Keys::KEY_A) || KeyState::get_key_state(Keys::KEY_D))
+        {
+            if (KeyState::get_key_state(Keys::KEY_A))
+            {
+                m_player->get_velocity() = m_player->get_max_velocity();
+                m_player->set_orientation(false);
+            }
+            else if (KeyState::get_key_state(Keys::KEY_D))
+            {
+                m_player->get_velocity() = m_player->get_max_velocity();
+                m_player->set_orientation(true);
+            }
+        }
+        else
+        {
+            m_player->get_velocity() = 0.f;
+        }
     }
 }
+
+
 
 std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char description)
 {
@@ -105,6 +139,10 @@ std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char des
         return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_2);
     case 'E':
         return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_3);
+    case 'Z':
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_1);
+    case 'X':
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_2);
     default:
         return nullptr;
     }

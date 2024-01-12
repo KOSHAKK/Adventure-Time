@@ -13,7 +13,6 @@ public:
 
 	void init(const glm::uvec2& window_size);
 
-	void set_key(const int key, const int action);
 	void update(const uint64_t delta);
 	void render() const;
 
@@ -27,11 +26,10 @@ public:
 
 
 private:
-	std::array<bool, 349> m_keys;
 	glm::uvec2 m_window_size;
 	std::shared_ptr<Render::ShaderProgram> m_pShaderProgram;
 
-	std::unique_ptr<ILevel> level_1;
+	std::shared_ptr<ILevel> level_1;
 
 
 };

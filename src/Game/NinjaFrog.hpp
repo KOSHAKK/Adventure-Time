@@ -1,7 +1,7 @@
 #pragma once
 #include "IGameObject.hpp"
 #include <array>
-
+#include <iostream>
 namespace Render
 {
 	class AnimatedSprite;
@@ -10,7 +10,7 @@ namespace Render
 class NinjaFrog : public IGameObject
 {
 public:
-	NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float rotate = 0.f);
+	NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float max_velocity = 0.2f ,const float rotate = 0.f);
 
 	enum class EState
 	{
@@ -35,11 +35,11 @@ public:
 	void set_rotation(const float rotation) override;
 	void set_size(const glm::vec2& size) override;
 	void set_pos(const glm::vec2& position) override;
+	float get_max_velocity() const { return m_MAX_SPEED; }
 
 private:
-	bool m_is_right = false;
 	EState m_state = EState::IDLE;
-	bool is_move = false;
 
+	float m_MAX_SPEED = 0.2f;
 	std::array<std::shared_ptr<Render::AnimatedSprite>, static_cast<size_t>(EState::WALL_JUMP)> m_sprites;
 };

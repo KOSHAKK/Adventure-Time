@@ -2,14 +2,16 @@
 #include <iostream>
 #include "Level_1.hpp"
 #include <glm/mat4x4.hpp>
-#include "../System/Keys.hpp"
 #include "../Render/Sprite.hpp"
 #include "../Render/Texture2D.hpp"
 #include "../Render/ShaderProgram.hpp"
 #include <glm/gtc/matrix_transform.hpp>
+#include "../Physics/PhysicsEngine.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include "../Render/AnimatedSprite.hpp"
 #include "../Resources/ResourceManager.hpp"
+#include "../System/Keys.hpp"
+#include "../System/KeyState.hpp"
 
 void Game::init(const glm::uvec2& window_size)
 {
@@ -22,18 +24,12 @@ void Game::init(const glm::uvec2& window_size)
     m_pShaderProgram->use();
     m_pShaderProgram->set_matrix4("projection", projectionMatrix);
 
+    
 
-
-
-
-    level_1 = std::make_unique<Level_1>();
+    level_1 = std::make_shared<Level_1>(64, 64 * 3 * 6, 64 * 3 * 4);
     level_1->init();
+    PhysicsEngine::set_current_level(level_1);
 
-}
-
-void Game::set_key(const int key, const int action)
-{
-	m_keys[key] = action;
 }
 
 void Game::update(const uint64_t delta)

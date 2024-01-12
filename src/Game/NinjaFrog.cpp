@@ -3,14 +3,18 @@
 #include "../Render/Sprite.hpp"
 #include "../Resources/ResourceManager.hpp"
 #include <vector>
+#include <iostream>
 
-
-NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float rotate)
+NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float max_velocity, const float rotate)
+    : m_MAX_SPEED(max_velocity)
 {
+
+
+    m_object_type = IGameObject::EObjectType::PLAYER;
 	static int counter = 0;
 	counter++;
 	m_sprites[static_cast<size_t>(EState::IDLE)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter),
-		"ninja_frog_idle_atlas", "default_shader", scale.x, scale.y, "ninja_frog_idle1");
+		"ninja_frog_idle_atlas", "default_shader", static_cast<const unsigned int>(scale.x), static_cast<const unsigned int>(scale.y), "ninja_frog_idle1");
 
 
 	std::vector<std::pair<std::string, uint64_t>> idle_states = {
@@ -32,7 +36,7 @@ NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float r
     m_sprites[static_cast<size_t>(EState::IDLE)]->set_rotate(rotate);
 
     m_sprites[static_cast<size_t>(EState::RUN)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter),
-        "ninja_frog_run_atlas", "default_shader", scale.x, scale.y, "ninja_frog_run1");
+        "ninja_frog_run_atlas", "default_shader", static_cast<const unsigned int>(scale.x), static_cast<const unsigned int>(scale.y), "ninja_frog_run1");
     std::vector<std::pair<std::string, uint64_t>> run_states = {
         std::make_pair("ninja_frog_run1", 50),
         std::make_pair("ninja_frog_run2", 50),
@@ -55,23 +59,26 @@ NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float r
 
 
 
-
-
-
-
-
-
-
+    m_colliderds.emplace_back(PhysicsEngine::AABB(glm::vec2(0.f), get_size()));
 }
 
 void NinjaFrog::update(const uint64_t delta)
 {
     m_sprites[static_cast<size_t>(m_state)]->update(delta);
+
+    if (m_velocity > 0.f)
+    {
+        m_state = EState::RUN;
+    }
+    else
+    {
+        m_state = EState::IDLE;
+    }
 }
 
 void NinjaFrog::render() const
 {
-    m_sprites[static_cast<size_t>(m_state)]->render(m_is_right);
+    m_sprites[static_cast<size_t>(m_state)]->render(!m_is_right);
 }
 
 void NinjaFrog::set_orientation(const bool is_left)
@@ -87,24 +94,27 @@ void NinjaFrog::set_state(const EState state)
 
 glm::vec2 NinjaFrog::get_pos() const
 {
-    return m_sprites[0]->get_position();
+    return m_sprites[static_cast<size_t>(m_state)]->get_position();
 }
 
 glm::vec2 NinjaFrog::get_size() const
 {
-    return m_sprites[0]->get_scale();
+    return m_sprites[static_cast<size_t>(m_state)]->get_scale();
 }
 
 float NinjaFrog::get_rotation() const
 {
-    return m_sprites[0]->get_rotate();
+    return m_sprites[static_cast<size_t>(m_state)]->get_rotate();
 }
 
 void NinjaFrog::set_rotation(const float rotation)
 {
     for (auto& sprite : m_sprites)
     {
-        sprite->set_rotate(rotation);
+        if (sprite)
+        {
+            sprite->set_rotate(rotation);
+        }
     }
 }
 
@@ -112,7 +122,10 @@ void NinjaFrog::set_size(const glm::vec2& size)
 {
     for (auto& sprite : m_sprites)
     {
-        sprite->set_scale(size);
+        if (sprite)
+        {
+            sprite->set_scale(size);
+        }
     }
 }
 
@@ -120,6 +133,11 @@ void NinjaFrog::set_pos(const glm::vec2& position)
 {
     for (auto& sprite : m_sprites)
     {
-        sprite->set_position(position);
+        if (sprite)
+        {
+            sprite->set_position(position);
+
+        }
     }
+
 }

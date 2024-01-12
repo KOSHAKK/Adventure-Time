@@ -36,7 +36,12 @@ add_executable(SimpleGame
 	src/Game/NinjaFrog.hpp
 	src/Game/NinjaFrog.cpp
 	
+	src/Physics/PhysicsEngine.hpp
+	src/Physics/PhysicsEngine.cpp
+	
 	src/System/Keys.hpp
+	src/System/KeyState.cpp
+	src/System/KeyState.hpp
 	
 	# lib
 	src/Resources/stb_image.hpp
@@ -46,6 +51,8 @@ set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 add_subdirectory(external/glfw)
 target_link_libraries(${PROJECT_NAME} glfw)

@@ -70,7 +70,7 @@ void Level_1::init()
         offsetY -= BLOCK_SIZE;
         for (size_t j = 0; j < m_map[i].size(); j++)
         {
-            m_game_objects.emplace_back(get_object_from_decsription(m_map[i][j]));
+            m_game_objects.emplace_back(get_object_from_decsription(m_map[i][j], glm::vec2(BLOCK_SIZE)));
             if (m_game_objects.back())
             {
                 PhysicsEngine::addDynamicGameObject(m_game_objects.back());
@@ -88,11 +88,6 @@ void Level_1::init()
 
 void Level_1::render()
 {
-
-    //std::cout << m_player->get_left_bottom().x << " " << m_player->get_left_bottom().y << std::endl;
-    //std::cout << m_player->get_right_top().x << " " << m_player->get_right_top().y << std::endl;
-    //std::cout << "---------------------------\n";
-
     ILevel::render();
     if (m_player)
     {
@@ -129,20 +124,20 @@ void Level_1::update(const uint64_t delta)
 
 
 
-std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char description)
+std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char description, const glm::vec2& scale)
 {
     switch (description)
     {
     case 'Q':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_1);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_1, glm::vec2(0.f), scale);
     case 'W':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_2);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_2, glm::vec2(0.f), scale);
     case 'E':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_3);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_3, glm::vec2(0.f), scale);
     case 'Z':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_1);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_1, glm::vec2(0.f), scale);
     case 'X':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_2);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_2, glm::vec2(0.f), scale);
     default:
         return nullptr;
     }

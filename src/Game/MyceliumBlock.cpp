@@ -3,6 +3,7 @@
 #include "../Resources/ResourceManager.hpp"
 #include "../Render/Sprite.hpp"
 #include <string>
+#include <iostream>
 
 MyceliumBlock::MyceliumBlock(const EType block_type, const glm::vec2& pos, const glm::vec2& scale, const float rotate)
 	: m_type(block_type)
@@ -33,10 +34,10 @@ MyceliumBlock::MyceliumBlock(const EType block_type, const glm::vec2& pos, const
 
 	m_sprite->set_position(pos);
 	m_sprite->set_rotate(rotate);
+
+
+	m_colliderds.emplace_back(PhysicsEngine::AABB(glm::vec2(0.f), scale));
 	
-
-
-	m_colliderds.emplace_back(PhysicsEngine::AABB(glm::vec2(0.f), get_size()));
 
 }
 

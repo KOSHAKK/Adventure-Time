@@ -36,7 +36,7 @@ public:
 	 
 private:
 
-	std::shared_ptr<IGameObject> get_object_from_decsription(const char description);
+	std::shared_ptr<IGameObject> get_object_from_decsription(const char description, const glm::vec2& scale);
 
 
 
@@ -44,12 +44,12 @@ private:
 	std::vector<std::string> m_map = {
 		"QQQQQQQQQQQQQQQQQQ",
 		"QOOOOOOOOOOOOOOOOQ",
+		"QOOOOOEOOOOOOOOOOQ",
 		"QOOOOOOOOOOOOOOOOQ",
-		"QOOOOOOOOOOOOOOOOQ",
-		"QOOOOOOOOOOOOOOOOQ",
-		"QOOOOOOOOOOOOOOOOQ",
-		"QOOOOOOOOOOOOOOOOQ",
-		"QOOOOOOOOOOOOOOOOQ",
+		"QOOOOOOOOQQQQOOOOQ",
+		"QOXOOOWOOOOOWOOOOQ",
+		"QOOOOOOOOOOOQOOOOQ",
+		"QOOOZOOOOQQQQOOOOQ",
 		"QOOWOOOOOOOQOOOOOQ",
 		"QOOWOOOOOOOQOOOOOQ",
 		"QWWWWWWWWWWWWWWWWE",

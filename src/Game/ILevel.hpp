@@ -16,7 +16,7 @@ public:
 	unsigned int get_width() const;
 	unsigned int get_height() const;
 
-	const std::vector<std::shared_ptr<IGameObject>>& get_object_in_area(const glm::vec2& bottom_left, const glm::vec2& top_right) const;
+	std::vector<std::shared_ptr<IGameObject>> get_object_in_area(const glm::vec2& bottom_left, const glm::vec2& top_right) const;
 
 	unsigned int get_block_size() const;
 

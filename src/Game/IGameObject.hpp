@@ -28,12 +28,23 @@ public:
 	virtual float& get_velocity() { return m_velocity; }
 	EObjectType type() const { return m_object_type; }
 	const std::vector<PhysicsEngine::AABB>& get_colliders() const { return m_colliderds; }
+	const bool is_jump() const { return m_is_jump; }
+	const bool is_fall() const { return m_is_fall; }
+	void set_jump(const bool is_jump) { m_is_jump = is_jump; }
+	void set_fall(const bool is_fall) { m_is_fall = is_fall; }
+	const float get_jump_power() const { return m_jump_power; }
+	void set_jump_power(const float power) { m_jump_power = power; }
+	const float virtual get_max_jump_power() const = 0;
 
 
 protected:
 	float m_velocity;
 	bool m_is_right = false;
 	EObjectType m_object_type;
+	bool m_is_jump = false;
+	bool m_is_fall = false;
+
+	float m_jump_power = 0.f;
 
 	std::vector<PhysicsEngine::AABB> m_colliderds;
 

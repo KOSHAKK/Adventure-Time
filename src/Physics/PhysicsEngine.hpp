@@ -8,6 +8,7 @@
 class ILevel;
 class IGameObject;
 
+constexpr float G = 0.2f;
 
 class PhysicsEngine {
 public:
@@ -36,6 +37,7 @@ public:
     static void addDynamicGameObject(std::shared_ptr<IGameObject> p_game_object);
 
     static bool has_colliders_intersection(const std::vector<AABB>& collider1, const glm::vec2& pos1, const std::vector<AABB>& collider2, const glm::vec2& pos2);
+
 
     static void set_current_level(std::shared_ptr<ILevel> p_level);
 

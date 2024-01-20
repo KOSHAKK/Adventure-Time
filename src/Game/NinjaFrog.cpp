@@ -57,9 +57,28 @@ NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float m
     m_sprites[static_cast<size_t>(EState::RUN)]->set_rotate(rotate);
 
 
+    m_sprites[static_cast<size_t>(EState::JUMP)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter),
+        "ninja_frog_jump_atlas", "default_shader", static_cast<const unsigned int>(scale.x), static_cast<const unsigned int>(scale.y), "ninja_frog_jump1");
+    std::vector<std::pair<std::string, uint64_t>> jump_states = {
+       std::make_pair("ninja_frog_jump1", 50),
+    };
+    m_sprites[static_cast<size_t>(EState::JUMP)]->insertState("jump_state", jump_states);
+    m_sprites[static_cast<size_t>(EState::JUMP)]->setState("jump_state");
+    m_sprites[static_cast<size_t>(EState::JUMP)]->set_position(pos);
+    m_sprites[static_cast<size_t>(EState::JUMP)]->set_rotate(rotate);
 
 
-    m_colliderds.emplace_back(PhysicsEngine::AABB(glm::vec2(0.f), get_size()));
+    m_sprites[static_cast<size_t>(EState::FALL)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter),
+        "ninja_frog_fall_atlas", "default_shader", static_cast<const unsigned int>(scale.x), static_cast<const unsigned int>(scale.y), "ninja_frog_fall1");
+    std::vector<std::pair<std::string, uint64_t>> fall_states = {
+       std::make_pair("ninja_frog_fall1", 50),
+    };
+    m_sprites[static_cast<size_t>(EState::FALL)]->insertState("fall_state", fall_states);
+    m_sprites[static_cast<size_t>(EState::FALL)]->setState("fall_state");
+    m_sprites[static_cast<size_t>(EState::FALL)]->set_position(pos);
+    m_sprites[static_cast<size_t>(EState::FALL)]->set_rotate(rotate);
+
+    m_colliderds.emplace_back(PhysicsEngine::AABB(glm::vec2(20.f, 3.f), get_size() - 20.f));
 }
 
 void NinjaFrog::update(const uint64_t delta)
@@ -73,6 +92,15 @@ void NinjaFrog::update(const uint64_t delta)
     else
     {
         m_state = EState::IDLE;
+    }
+
+    if (m_is_jump)
+    {
+        m_state = EState::JUMP;
+    }
+    if (m_is_fall)
+    {
+        m_state = EState::FALL;
     }
 }
 

@@ -29,6 +29,7 @@ public:
 	void set_rotation(const float rotation) override;
 	void set_size(const glm::vec2& size) override;
 	void set_pos(const glm::vec2& position) override;
+	const float get_max_jump_power() const override { return 0.f; }
 
 
 private:

@@ -15,10 +15,14 @@ public:
 	void virtual update(const uint64_t delta);
 	unsigned int get_width() const;
 	unsigned int get_height() const;
+	unsigned int get_block_size() const;
+	
 
 	std::vector<std::shared_ptr<IGameObject>> get_object_in_area(const glm::vec2& bottom_left, const glm::vec2& top_right) const;
+	bool has_object_down(const glm::vec2& bottom_left, const glm::vec2& top_right) const;
 
-	unsigned int get_block_size() const;
+
+
 
 protected:
 	bool m_is_finish = false;

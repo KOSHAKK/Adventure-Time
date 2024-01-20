@@ -59,7 +59,18 @@ void Level_1::init()
     };
     ResourceManager::load_texture_atlas("ninja_frog_idle_atlas", "res/Textures/Main Characters/Ninja Frog/Idle (32x32).png", ninja_idle_sub_textures_names, 32, 32);
 
-    m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 70), glm::vec2(100, 100));
+    std::vector<std::string> ninja_jump_sub_textures_names{
+        "ninja_frog_jump1",
+    };
+    ResourceManager::load_texture_atlas("ninja_frog_jump_atlas", "res/Textures/Main Characters/Ninja Frog/Jump (32x32).png", ninja_jump_sub_textures_names, 32, 32);
+
+    std::vector<std::string> ninja_fall_sub_textures_names{
+    "ninja_frog_fall1",
+    };
+    ResourceManager::load_texture_atlas("ninja_frog_fall_atlas", "res/Textures/Main Characters/Ninja Frog/Fall (32x32).png", ninja_fall_sub_textures_names, 32, 32);
+
+
+    m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 70), glm::vec2(100, 100), 0.35f);
     PhysicsEngine::addDynamicGameObject(m_player);
 
     unsigned int offsetX = 0;
@@ -97,12 +108,20 @@ void Level_1::render()
 
 void Level_1::update(const uint64_t delta)
 {
+
+
+
     ILevel::update(delta);
     if (m_player)
     {
         m_player->update(delta);
 
-        if (KeyState::get_key_state(Keys::KEY_W) || KeyState::get_key_state(Keys::KEY_S) || KeyState::get_key_state(Keys::KEY_A) || KeyState::get_key_state(Keys::KEY_D))
+        if (KeyState::get_key_state(Keys::KEY_SPACE) && m_player->get_jump_power() == 0.f && !m_player->is_fall() && has_object_down(m_player->get_pos() + 36.f, (m_player->get_pos() + m_player->get_size()) - 20.f))
+        {
+            m_player->set_jump(true);
+            m_player->set_jump_power(m_player->get_max_jump_power());
+        }
+        if (KeyState::get_key_state(Keys::KEY_S) || KeyState::get_key_state(Keys::KEY_A) || KeyState::get_key_state(Keys::KEY_D))
         {
             if (KeyState::get_key_state(Keys::KEY_A))
             {

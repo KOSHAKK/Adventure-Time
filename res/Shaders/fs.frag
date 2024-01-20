@@ -23,6 +23,6 @@ void main()
 
    if (frag_color == vec4(0.0))
    {
-		//discard;
+		discard;
    }
 }

@@ -36,10 +36,13 @@ public:
 	void set_size(const glm::vec2& size) override;
 	void set_pos(const glm::vec2& position) override;
 	float get_max_velocity() const { return m_MAX_SPEED; }
+	const float get_max_jump_power() const override { return 35.f; }
 
 private:
 	EState m_state = EState::IDLE;
 
-	float m_MAX_SPEED = 0.2f;
+
+
+	float m_MAX_SPEED = 0.4f;
 	std::array<std::shared_ptr<Render::AnimatedSprite>, static_cast<size_t>(EState::WALL_JUMP)> m_sprites;
 };

@@ -54,6 +54,9 @@ std::vector<std::shared_ptr<IGameObject>> ILevel::get_object_in_area(const glm::
 	glm::vec2 bottom_left_converted(std::clamp(bottom_left.x - BLOCK_SIZE, 0.f, static_cast<float>(get_width())),
 		std::clamp(get_height() - BLOCK_SIZE - bottom_left.y - BLOCK_SIZE, 0.f, static_cast<float>(get_height())));
 
+	
+
+
 	glm::vec2 top_right_coverted(std::clamp(top_right.x - BLOCK_SIZE, 0.f, static_cast<float>(get_width())),
 		std::clamp(get_height() - BLOCK_SIZE - top_right.y - BLOCK_SIZE, 0.f, static_cast<float>(get_height())));
 
@@ -66,11 +69,7 @@ std::vector<std::shared_ptr<IGameObject>> ILevel::get_object_in_area(const glm::
 	
 
 
-	//std::cout << "startX = " << startX << " EndX = " << EndX << std::endl;
-	//std::cout << "startY = " << startY << " EndY = " << EndY << std::endl;
-	//std::cout << bottom_left_converted.x << " " << bottom_left_converted.y << std::endl;
-	//std::cout << top_right_coverted.x << " " << top_right_coverted.y << std::endl;
-	//std::cout << "-------------------------------------------------\n";
+
 
 	for (size_t current_column = startX; current_column <= EndX; current_column++)
 	{
@@ -87,6 +86,37 @@ std::vector<std::shared_ptr<IGameObject>> ILevel::get_object_in_area(const glm::
 	//std::cout << output.size() << std::endl;	
 
 	return output;
+}
+
+bool ILevel::has_object_down(const glm::vec2& bottom_left, const glm::vec2& top_right) const
+{
+	glm::vec2 bottom_left_converted(std::clamp(bottom_left.x - BLOCK_SIZE, 0.f, static_cast<float>(get_width())),
+		std::clamp(get_height() - BLOCK_SIZE - bottom_left.y - BLOCK_SIZE, 0.f, static_cast<float>(get_height())));
+
+
+	glm::vec2 top_right_coverted(std::clamp(top_right.x - BLOCK_SIZE, 0.f, static_cast<float>(get_width())),
+		std::clamp(get_height() - BLOCK_SIZE - top_right.y - BLOCK_SIZE, 0.f, static_cast<float>(get_height())));
+
+	top_right_coverted.y -= top_right.y - bottom_left.y;
+
+
+
+
+	int startX = (bottom_left_converted.x / BLOCK_SIZE) + 1;
+	int EndX = (top_right_coverted.x / BLOCK_SIZE) + 1;
+
+	int y = ((bottom_left_converted.y - 20) / (BLOCK_SIZE)) + 2;
+
+
+	for (size_t x = startX; x <= EndX; x++)
+	{
+		if (m_game_objects[y * (get_width() / BLOCK_SIZE) + x])
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 unsigned int ILevel::get_block_size() const

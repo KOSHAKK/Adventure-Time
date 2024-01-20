@@ -1,10 +1,15 @@
 #include "PhysicsEngine.hpp"
+#include <GLFW/glfw3.h>///////////////////////
 
 #include "../Game/IGameObject.hpp"
 #include <iostream>
 #include "../Game/ILevel.hpp"
 #include "../System/Keys.hpp"
 #include "../System/KeyState.hpp"
+#include <cmath>
+
+
+#define gravity 0.5f
 
 std::unordered_set<std::shared_ptr<IGameObject>> PhysicsEngine::m_dynamicObjects;
 std::shared_ptr<ILevel> PhysicsEngine::m_current_level;
@@ -24,31 +29,54 @@ void PhysicsEngine::update(const uint64_t delta)
 {
     for (auto& currentObject : m_dynamicObjects)
     {
-        if (currentObject->get_velocity() > 0 || 1) ///////////////////////////////////////// fix
+        if (currentObject->type() == IGameObject::EObjectType::PLAYER)
+        {
+            if (!m_current_level->has_object_down(glm::vec2(currentObject->get_pos().x + 20.f, currentObject->get_pos().y + 36.f), (currentObject->get_pos() + currentObject->get_size()) - 20.f) && !currentObject->is_jump()) // fix colider 
+            {
+                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y - gravity * delta));
+                currentObject->set_fall(true);
+            }
+            else
+            {
+                currentObject->set_fall(false);
+            }
+        }
+
+
+        
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if (currentObject->is_jump() && currentObject->type() == IGameObject::EObjectType::PLAYER && currentObject->get_jump_power() != 0.f)
+        {
+            currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y + 0.6f * delta));
+            currentObject->set_jump_power(currentObject->get_jump_power() - 1.0f);
+        }
+        if (currentObject->get_jump_power() == 0.f && currentObject->type() == IGameObject::EObjectType::PLAYER)
+        {
+            currentObject->set_jump(false);
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        if (currentObject->get_velocity() > 0)
         {
             glm::vec2 new_pos;
             const auto& colliders = currentObject->get_colliders();
 
             if (currentObject->get_direction())
             {
-                new_pos = (glm::vec2((currentObject->get_pos() + currentObject->get_velocity() * delta).x, currentObject->get_pos().y));
+                new_pos = glm::vec2((currentObject->get_pos() + currentObject->get_velocity() * delta).x, currentObject->get_pos().y);
             }
             else
             {
-                new_pos = (glm::vec2((currentObject->get_pos() - currentObject->get_velocity() * delta).x, currentObject->get_pos().y));
+                new_pos = glm::vec2((currentObject->get_pos() - currentObject->get_velocity() * delta).x, currentObject->get_pos().y);
             }
-            ///////////////
-            if (currentObject->type() == IGameObject::EObjectType::PLAYER && KeyState::get_key_state(Keys::KEY_SPACE))
-            {
-                new_pos = glm::vec2(new_pos.x, new_pos.y + 0.2f * delta);
 
-            }
-            if (currentObject->type() == IGameObject::EObjectType::PLAYER && KeyState::get_key_state(Keys::KEY_LEFT_SHIFT))
-            {
-                new_pos = glm::vec2(new_pos.x, new_pos.y - 0.2f * delta);
-            }
-            //////////////
+
             const auto& objects_to_cheak = m_current_level->get_object_in_area(new_pos, new_pos + currentObject->get_size());
+
+            
+
 
             bool has_collision = false;
 
@@ -64,7 +92,7 @@ void PhysicsEngine::update(const uint64_t delta)
                     }
                 }
             }
-
+            
             if (!has_collision)
             {
                 currentObject->set_pos(new_pos);

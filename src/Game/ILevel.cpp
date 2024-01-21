@@ -119,6 +119,37 @@ bool ILevel::has_object_down(const glm::vec2& bottom_left, const glm::vec2& top_
 	return false;
 }
 
+bool ILevel::has_object_up(const glm::vec2& bottom_left, const glm::vec2& top_right) const
+{
+	glm::vec2 bottom_left_converted(std::clamp(bottom_left.x - BLOCK_SIZE, 0.f, static_cast<float>(get_width())),
+		std::clamp(get_height() - BLOCK_SIZE - bottom_left.y - BLOCK_SIZE, 0.f, static_cast<float>(get_height())));
+
+
+	glm::vec2 top_right_coverted(std::clamp(top_right.x - BLOCK_SIZE, 0.f, static_cast<float>(get_width())),
+		std::clamp(get_height() - BLOCK_SIZE - top_right.y - BLOCK_SIZE, 0.f, static_cast<float>(get_height())));
+
+	top_right_coverted.y -= top_right.y - bottom_left.y;
+
+
+
+
+	int startX = (bottom_left_converted.x / BLOCK_SIZE) + 1;
+	int EndX = (top_right_coverted.x / BLOCK_SIZE) + 1;
+
+	int y = ((bottom_left_converted.y - 20) / (BLOCK_SIZE));
+
+
+	for (size_t x = startX; x <= EndX; x++)
+	{
+		if (m_game_objects[y * (get_width() / BLOCK_SIZE) + x])
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 unsigned int ILevel::get_block_size() const
 {
 	return BLOCK_SIZE;

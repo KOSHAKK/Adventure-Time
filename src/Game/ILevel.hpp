@@ -20,7 +20,7 @@ public:
 
 	std::vector<std::shared_ptr<IGameObject>> get_object_in_area(const glm::vec2& bottom_left, const glm::vec2& top_right) const;
 	bool has_object_down(const glm::vec2& bottom_left, const glm::vec2& top_right) const;
-
+	bool has_object_up(const glm::vec2& bottom_left, const glm::vec2& top_right) const;
 
 
 

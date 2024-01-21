@@ -70,7 +70,7 @@ void Level_1::init()
     ResourceManager::load_texture_atlas("ninja_frog_fall_atlas", "res/Textures/Main Characters/Ninja Frog/Fall (32x32).png", ninja_fall_sub_textures_names, 32, 32);
 
 
-    m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 70), glm::vec2(100, 100), 0.35f);
+    m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 70), glm::vec2(100, 100), 0.25f);
     PhysicsEngine::addDynamicGameObject(m_player);
 
     unsigned int offsetX = 0;

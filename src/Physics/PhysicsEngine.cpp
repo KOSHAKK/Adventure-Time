@@ -48,14 +48,22 @@ void PhysicsEngine::update(const uint64_t delta)
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (currentObject->is_jump() && currentObject->type() == IGameObject::EObjectType::PLAYER && currentObject->get_jump_power() != 0.f)
         {
-            currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y + 0.6f * delta));
-            currentObject->set_jump_power(currentObject->get_jump_power() - 1.0f);
+            if (!m_current_level->has_object_up(glm::vec2(currentObject->get_pos().x + 20.f, currentObject->get_pos().y + 10.f), glm::vec2((currentObject->get_pos() + currentObject->get_size()).x - 20.f, (currentObject->get_pos() + currentObject->get_size()).y)))
+            {
+                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y + 0.6f * delta));
+                currentObject->set_jump_power(currentObject->get_jump_power() - 1.0f);
+            }
+            else
+            {
+                currentObject->set_jump_power(0.f);
+            }
         }
         if (currentObject->get_jump_power() == 0.f && currentObject->type() == IGameObject::EObjectType::PLAYER)
         {
             currentObject->set_jump(false);
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
         if (currentObject->get_velocity() > 0)

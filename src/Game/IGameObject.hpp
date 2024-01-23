@@ -12,11 +12,12 @@ public:
 	enum class EObjectType
 	{
 		MYCELIUM_BLOCK,
+		BORDER,
 		PLAYER,
 	};
 
 
-	void virtual render() const  = 0;
+	void virtual render() const = 0;
 	void virtual update(const uint64_t delta) = 0;
 	glm::vec2 virtual get_pos() const = 0;
 	glm::vec2 virtual get_size() const = 0;

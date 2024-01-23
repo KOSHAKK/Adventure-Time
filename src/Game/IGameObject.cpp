@@ -3,6 +3,4 @@
 
 IGameObject::IGameObject()
 	: m_velocity(0.f)
-{
-
-}
+{	 }

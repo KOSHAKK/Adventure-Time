@@ -27,6 +27,8 @@ add_executable(SimpleGame
 	src/Game/IGameObject.cpp
 	src/Game/ILevel.hpp
 	src/Game/ILevel.cpp
+	src/Game/Border.hpp
+	src/Game/Border.cpp
 	
 	src/Game/Level_1.cpp
 	src/Game/Level_1.hpp

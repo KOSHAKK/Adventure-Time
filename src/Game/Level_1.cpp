@@ -7,6 +7,7 @@
 #include <iostream>
 #include <array>
 #include <glm/vec2.hpp>
+#include "../Game/Border.hpp"
 
 void Level_1::init()
 {
@@ -25,6 +26,43 @@ void Level_1::init()
         "mycelium_dirt_1",
         "mycelium_dirt_2",
         "NONE2",
+        "coper3x1_1",
+        "coper3x1_1",
+        "coper3x1_3",
+        "coper1x3_1",
+        "NONE3",
+        "gold3x1_1",
+        "gold3x1_2",
+        "gold3x1_3",
+        "gold1x3_1",
+        "border_empty",
+        "left_border",
+        "empty4",
+        "right_border_1",
+        "right_border",
+        "mycelium_dirt_3",
+        "mycelium_dirt_4",
+        "mycelium_dirt_5",
+        "mycelium_dirt_6",
+        "mycelium_dirt_7",
+        "NONE5",
+        "coper1x1",
+        "coper2x2_1",
+        "coper2x2_2",
+        "NONE6",
+        "gold1x1",
+        "gold2x2_1",
+        "gold2x2_2",
+        "gold1x3_2",
+        "2",
+        "Xdddd",
+        "1",
+        "3",
+        "left_bottom_border",
+        "bottom_border",
+        "right_bottom_border",
+
+
     };
     ResourceManager::load_texture_atlas("terrain_atlas", "res/Textures/Terrain/Terrain (16x16).png", terrain_sub_textures_names, 16, 16);
 
@@ -68,6 +106,12 @@ void Level_1::init()
     "ninja_frog_fall1",
     };
     ResourceManager::load_texture_atlas("ninja_frog_fall_atlas", "res/Textures/Main Characters/Ninja Frog/Fall (32x32).png", ninja_fall_sub_textures_names, 32, 32);
+
+
+
+
+
+
 
 
     m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 70), glm::vec2(100, 100), 0.25f);
@@ -157,6 +201,22 @@ std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char des
         return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_1, glm::vec2(0.f), scale);
     case 'X':
         return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_2, glm::vec2(0.f), scale);
+    case 'B':
+        return std::make_shared<Border>(Border::EType::LEFT_TOP_BORDER, glm::vec2(0.f), scale, 0.f);
+    case 'N':
+        return std::make_shared<Border>(Border::EType::RIGHT_TOP_BORDER, glm::vec2(0.f), scale, 0.f);
+    case 'M':
+        return std::make_shared<Border>(Border::EType::RIGHT_BORDER, glm::vec2(0.f), scale, 0.f);
+    case 'L':
+        return std::make_shared<Border>(Border::EType::LEFT_BORDER, glm::vec2(0.f), scale, 0.f);
+    case 'P':
+        return std::make_shared<Border>(Border::EType::TOP_BORDER, glm::vec2(0.f), scale, 0.f);
+    case 'I':
+        return std::make_shared<Border>(Border::EType::RIGHT_BOTTOM_BORDER, glm::vec2(0.f), scale, 0.f);
+    case 'U':
+        return std::make_shared<Border>(Border::EType::LEFT_BOTTOM_BORDER, glm::vec2(0.f), scale, 0.f);
+    case 'Y':
+        return std::make_shared<Border>(Border::EType::BOTTOM_BORDER, glm::vec2(0.f), scale, 0.f);
     default:
         return nullptr;
     }

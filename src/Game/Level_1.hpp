@@ -14,10 +14,16 @@
 	E -> mycelium block 3
 	Z -> mycelium dirt 1
 	X -> mycelium dirt 2
+	B -> left_top_border
+	N -> right_top_border
+	M -> right_border
+	L -> left_border
+	P -> top_border
+	I -> right_bottom_border
+	U -> left_bottom_border
+	Y -> bottom_border
 
-
-
-	O -> EMPTY
+	O -> AIR
 */
 
 
@@ -44,15 +50,15 @@ private:
 	std::vector<std::string> m_map = {
 		"QQQQQQQQQQQQQQQQQQ",
 		"QOOOOOOOOOOOOOOOOQ",
+		"QOOOOOOOOBNMOOOOOQ",
 		"QOOOOOOOOOOOOOOOOQ",
 		"QOOOOOOOOOOOOOOOOQ",
-		"QOOOOOOOOOQQQOOOOQ",
-		"QOOOOOOOOOOOWOOOOQ",
-		"QOOWWOOOOOOOQOOOOQ",
-		"QOOOOOOOOOQQQOOOOQ",
-		"QWOOOOOOOOOOOOOOOQ",
-		"QWOOOOOOOOOOOOOOOQ",
-		"QQQQQQQQQQQQQQQQQQ",
+		"QOOOOOOOOOOOOOOOOQ",
+		"QOOOOOYOOOOOOOOOOQ",
+		"QOOOOOOOOOOOOOOOOQ",
+		"QOOOOOOOOOOOOOOOOQ",
+		"QOOOOOOOOOPLIUOOOQ",
+		"MPPPPPPPPPPPPPPPPQ",
 
 	};
 };

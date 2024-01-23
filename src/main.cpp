@@ -14,6 +14,7 @@
 #include "System/KeyState.hpp"
 #include "System/Keys.hpp"
 
+
 #include <GLFW/glfw3.h>
 
 std::unique_ptr<Game> game = std::make_unique<Game>();

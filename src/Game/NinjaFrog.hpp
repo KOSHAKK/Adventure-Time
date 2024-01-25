@@ -36,7 +36,7 @@ public:
 	void set_size(const glm::vec2& size) override;
 	void set_pos(const glm::vec2& position) override;
 	float get_max_velocity() const { return m_MAX_SPEED; }
-	const float get_max_jump_power() const override { return 250.f; }
+	const float get_max_jump_power() const override { return 500.f; }
 
 private:
 	EState m_state = EState::IDLE;

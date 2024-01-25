@@ -2,21 +2,19 @@
 #include <GLFW/glfw3.h>///////////////////////
 
 #include "../Game/IGameObject.hpp"
-#include <iostream>
 #include "../Game/ILevel.hpp"
 #include "../System/Keys.hpp"
 #include "../System/KeyState.hpp"
-#include <cmath>
+#include <iostream>
 
-
-#define gravity 0.5f
+#define gravity 0.001f
 
 std::unordered_set<std::shared_ptr<IGameObject>> PhysicsEngine::m_dynamicObjects;
 std::shared_ptr<ILevel> PhysicsEngine::m_current_level;
 
 void PhysicsEngine::init()
 {
-
+    
 }
 
 void PhysicsEngine::terminate()
@@ -31,13 +29,19 @@ void PhysicsEngine::update(const uint64_t delta)
     {
         if (currentObject->type() == IGameObject::EObjectType::PLAYER)
         {
+            static float elapsed_time = 0.f;
             if (!m_current_level->has_object_down(glm::vec2(currentObject->get_pos().x + 20.f, currentObject->get_pos().y + 36.f), (currentObject->get_pos() + currentObject->get_size()) - 20.f) && !currentObject->is_jump()) // fix colider 
             {
-                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y - gravity * delta));
+                elapsed_time += static_cast<float>(delta) / 450;
+                std::cout << elapsed_time << std::endl;
+
+
+                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y - elapsed_time * delta));
                 currentObject->set_fall(true);
             }
             else
             {
+                elapsed_time = 0.f;
                 currentObject->set_fall(false);
             }
         }
@@ -45,16 +49,18 @@ void PhysicsEngine::update(const uint64_t delta)
 
         
 
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (currentObject->is_jump() && currentObject->type() == IGameObject::EObjectType::PLAYER && currentObject->get_jump_power() > 0.f)
         {
             if (!m_current_level->has_object_up(glm::vec2(currentObject->get_pos().x + 20.f, currentObject->get_pos().y + 10.f), glm::vec2((currentObject->get_pos() + currentObject->get_size()).x - 20.f, (currentObject->get_pos() + currentObject->get_size()).y)))
             {
-                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y + 0.6f * delta));
+                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y + (currentObject->get_jump_power()/700) * delta));
                 currentObject->set_jump_power(currentObject->get_jump_power() - (1.0f * delta));
             }
             else
             {
+                
                 currentObject->set_jump_power(0.f);
             }
         }

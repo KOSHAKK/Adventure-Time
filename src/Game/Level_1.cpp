@@ -17,8 +17,8 @@ void Level_1::init()
         "left_top_border",
         "top_border",
         "right_top_border",
-        "empty1",
-        "empty2",
+        "left_top_sub_border",
+        "right_top_sub_border",
         "NONE1",
         "mycelium_block_1",
         "mycelium_block_2",
@@ -38,8 +38,9 @@ void Level_1::init()
         "border_empty",
         "left_border",
         "empty4",
-        "right_border_1",
         "right_border",
+        "left_bottom_border",
+        "right_bottom_border",
         "mycelium_dirt_3",
         "mycelium_dirt_4",
         "mycelium_dirt_5",
@@ -217,6 +218,10 @@ std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char des
         return std::make_shared<Border>(Border::EType::LEFT_BOTTOM_BORDER, glm::vec2(0.f), scale, 0.f);
     case 'Y':
         return std::make_shared<Border>(Border::EType::BOTTOM_BORDER, glm::vec2(0.f), scale, 0.f);
+    case 'J':
+        return std::make_shared<Border>(Border::EType::LEFT_TOP_SUB_BORDER, glm::vec2(0.f), scale, 0.f);
+    case 'T':
+        return std::make_shared<Border>(Border::EType::RIGHT_TOP_SUB_BORDER, glm::vec2(0.f), scale, 0.f);
     default:
         return nullptr;
     }

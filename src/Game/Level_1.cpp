@@ -8,6 +8,7 @@
 #include <array>
 #include <glm/vec2.hpp>
 #include "../Game/Border.hpp"
+#include "../Render/Sprite.hpp"
 
 void Level_1::init()
 {
@@ -140,10 +141,28 @@ void Level_1::init()
             }
         }
     }
+
+
+    ResourceManager::load_texture("background_yellow", "res/Background/Gray.png");
+
+    m_background = ResourceManager::load_sprite("backgound_yellow_sprite", "default_shader", "background_yellow", 128, 128);
+    m_background->set_position({ 150, 150 });
+
 } 
 
 void Level_1::render()
 {
+    for (int i = 0; i < m_width / 128; i++)
+    {
+        for (int j = 0; j < m_height / 128; j++)
+        {
+            m_background->set_position(glm::vec2(i * 128, (j * 128) + m_background_pos));
+            m_background->render();
+
+        }
+    }
+
+    m_background->render();
     ILevel::render();
     if (m_player)
     {
@@ -153,6 +172,12 @@ void Level_1::render()
 
 void Level_1::update(const uint64_t delta)
 {
+    if (m_background_pos <= -128.f) 
+    {
+        m_background_pos = 0.f;
+    }
+    m_background_pos -= 0.027f * delta;
+
 
 
 

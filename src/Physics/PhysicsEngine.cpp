@@ -1,13 +1,10 @@
 #include "PhysicsEngine.hpp"
-#include <GLFW/glfw3.h>///////////////////////
 
 #include "../Game/IGameObject.hpp"
 #include "../Game/ILevel.hpp"
 #include "../System/Keys.hpp"
 #include "../System/KeyState.hpp"
-#include <iostream>
 
-#define gravity 0.001f
 
 std::unordered_set<std::shared_ptr<IGameObject>> PhysicsEngine::m_dynamicObjects;
 std::shared_ptr<ILevel> PhysicsEngine::m_current_level;
@@ -33,7 +30,6 @@ void PhysicsEngine::update(const uint64_t delta)
             if (!m_current_level->has_object_down(glm::vec2(currentObject->get_pos().x + 20.f, currentObject->get_pos().y + 36.f), (currentObject->get_pos() + currentObject->get_size()) - 20.f) && !currentObject->is_jump()) // fix colider 
             {
                 elapsed_time += static_cast<float>(delta) / 450;
-                std::cout << elapsed_time << std::endl;
 
 
                 currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y - elapsed_time * delta));
@@ -60,7 +56,6 @@ void PhysicsEngine::update(const uint64_t delta)
             }
             else
             {
-                
                 currentObject->set_jump_power(0.f);
             }
         }

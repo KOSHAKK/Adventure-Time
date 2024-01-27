@@ -29,7 +29,10 @@
 */
 
 
-
+namespace Render
+{
+	class Sprite;
+}
 
 
 
@@ -46,7 +49,9 @@ private:
 
 	std::shared_ptr<IGameObject> get_object_from_decsription(const char description, const glm::vec2& scale);
 
+	float m_background_pos = 0.f;
 
+	std::shared_ptr<Render::Sprite> m_background;
 
 	std::shared_ptr<NinjaFrog> m_player;
 	std::vector<std::string> m_map = {

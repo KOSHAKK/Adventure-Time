@@ -71,6 +71,7 @@ std::shared_ptr<Render::Texture2D> ResourceManager::load_texture(const std::stri
 	int channel{}, widht{}, height{};
 
 	stbi_set_flip_vertically_on_load(true);
+
 	unsigned char* pixels = stbi_load((m_executable_path + "/" + path).c_str(), &widht, &height, &channel, 0);
 
 	if (!pixels)
@@ -78,7 +79,6 @@ std::shared_ptr<Render::Texture2D> ResourceManager::load_texture(const std::stri
 		std::cerr << "Can't load image. Path: " << path << std::endl;
 		return nullptr;
 	}
-
 	std::shared_ptr<Render::Texture2D> texture = std::make_shared<Render::Texture2D>(widht, height, pixels, channel);
 
 	stbi_image_free(pixels);

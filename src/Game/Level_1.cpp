@@ -1,14 +1,16 @@
-#include "Level_1.hpp"
 #include "../Resources/ResourceManager.hpp"
-#include "MyceliumBlock.hpp"
 #include "../Physics/PhysicsEngine.hpp"
-#include "../System/Keys.hpp"
+#include "../Game/CopperBlock.hpp"
 #include "../System/KeyState.hpp"
+#include "../Render/Sprite.hpp"
+#include "../System/Keys.hpp"
+#include "MyceliumBlock.hpp"
+#include "../Game/Border.hpp"
+#include <glm/vec2.hpp>
+#include "Level_1.hpp"
+
 #include <iostream>
 #include <array>
-#include <glm/vec2.hpp>
-#include "../Game/Border.hpp"
-#include "../Render/Sprite.hpp"
 
 void Level_1::init()
 {
@@ -28,7 +30,7 @@ void Level_1::init()
         "mycelium_dirt_2",
         "NONE2",
         "coper3x1_1",
-        "coper3x1_1",
+        "coper3x1_2",
         "coper3x1_3",
         "coper1x3_1",
         "NONE3",
@@ -40,31 +42,41 @@ void Level_1::init()
         "left_border",
         "empty4",
         "right_border",
-        "left_bottom_border",
-        "right_bottom_border",
+        "left_bottom_sub_border",
+        "right_bottom_sub_border",
         "mycelium_dirt_3",
         "mycelium_dirt_4",
         "mycelium_dirt_5",
         "mycelium_dirt_6",
         "mycelium_dirt_7",
         "NONE5",
-        "coper1x1",
         "coper2x2_1",
+        "coper1x1_1", // fix
         "coper2x2_2",
         "NONE6",
-        "gold1x1",
+        "coper1x3_2",
         "gold2x2_1",
+        "gold1x1",
         "gold2x2_2",
         "gold1x3_2",
-        "2",
         "Xdddd",
-        "1",
-        "3",
+        "Xdddd",
         "left_bottom_border",
         "bottom_border",
         "right_bottom_border",
-
-
+        "NONE7",
+        "NONE8",
+        "NONE9",
+        "mycelium_dirt_8",
+        "mycelium_dirt_9",
+        "mycelium_dirt_10",
+        "NONE10",
+        "NONE11",
+        "NONE12",
+        "NONE13",
+        "coper2x2_3",
+        "coper2x2_4",
+        "coper1x3_3",
     };
     ResourceManager::load_texture_atlas("terrain_atlas", "res/Textures/Terrain/Terrain (16x16).png", terrain_sub_textures_names, 16, 16);
 
@@ -116,7 +128,7 @@ void Level_1::init()
 
 
 
-    m_player = std::make_unique<NinjaFrog>(glm::vec2(300, 70), glm::vec2(100, 100), 0.25f);
+    m_player = std::make_unique<NinjaFrog>(glm::vec2(100, 500), glm::vec2(100, 100), 0.25f);
     PhysicsEngine::addDynamicGameObject(m_player);
 
     unsigned int offsetX = 0;
@@ -127,12 +139,12 @@ void Level_1::init()
         offsetY -= BLOCK_SIZE;
         for (size_t j = 0; j < m_map[i].size(); j++)
         {
-            m_game_objects.emplace_back(get_object_from_decsription(m_map[i][j], glm::vec2(BLOCK_SIZE)));
+            m_game_objects.emplace_back(get_object_from_decsription(m_map[i][j], glm::vec2(static_cast<float>(BLOCK_SIZE)), glm::vec2(offsetX, offsetY)));
             if (m_game_objects.back())
             {
                 PhysicsEngine::addDynamicGameObject(m_game_objects.back());
-                m_game_objects.back()->set_pos(glm::vec2(offsetX, offsetY));
-                m_game_objects.back()->set_size(glm::vec2(BLOCK_SIZE, BLOCK_SIZE));
+               // m_game_objects.back()->set_pos(glm::vec2(offsetX, offsetY));
+                //m_game_objects.back()->set_size(glm::vec2(BLOCK_SIZE, BLOCK_SIZE));
             }
             offsetX += BLOCK_SIZE;
             if (offsetX >= get_width())
@@ -141,6 +153,9 @@ void Level_1::init()
             }
         }
     }
+
+
+
 
 
     ResourceManager::load_texture("background_yellow", "res/Background/Gray.png");
@@ -152,9 +167,9 @@ void Level_1::init()
 
 void Level_1::render()
 {
-    for (int i = 0; i < m_width / 128; i++)
+    for (unsigned int i = 0; i < m_width / 128; i++)
     {
-        for (int j = 0; j < m_height / 128; j++)
+        for (unsigned int j = 0; j < m_height / 128; j++)
         {
             m_background->set_position(glm::vec2(i * 128, (j * 128) + m_background_pos));
             m_background->render();
@@ -191,7 +206,7 @@ void Level_1::update(const uint64_t delta)
             m_player->set_jump(true);
             m_player->set_jump_power(m_player->get_max_jump_power());
         }
-        if (KeyState::get_key_state(Keys::KEY_S) || KeyState::get_key_state(Keys::KEY_A) || KeyState::get_key_state(Keys::KEY_D))
+        if (KeyState::get_key_state(Keys::KEY_S) || KeyState::get_key_state(Keys::KEY_A) || KeyState::get_key_state(Keys::KEY_D) || KeyState::get_key_state(Keys::KEY_R))
         {
             if (KeyState::get_key_state(Keys::KEY_A))
             {
@@ -203,6 +218,11 @@ void Level_1::update(const uint64_t delta)
                 m_player->get_velocity() = m_player->get_max_velocity();
                 m_player->set_orientation(true);
             }
+
+            if (KeyState::get_key_state(Keys::KEY_R))
+            {
+                m_player->set_pos(glm::vec2(100, 500));
+            }
         }
         else
         {
@@ -213,40 +233,58 @@ void Level_1::update(const uint64_t delta)
 
 
 
-std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char description, const glm::vec2& scale)
+std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char description, const glm::vec2& scale, const glm::vec2& pos)
 {
     switch (description)
     {
     case 'Q':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_1, glm::vec2(0.f), scale);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_1, pos, scale);
     case 'W':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_2, glm::vec2(0.f), scale);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_2, pos, scale);
     case 'E':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_3, glm::vec2(0.f), scale);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_BLOCK_3, pos, scale);
     case 'Z':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_1, glm::vec2(0.f), scale);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_1, pos, scale);
     case 'X':
-        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_2, glm::vec2(0.f), scale);
+        return std::make_shared<MyceliumBlock>(MyceliumBlock::EType::MYCELIUM_DIRT_2, pos, scale);
     case 'B':
-        return std::make_shared<Border>(Border::EType::LEFT_TOP_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::LEFT_TOP_BORDER, pos, scale, 0.f);
     case 'N':
-        return std::make_shared<Border>(Border::EType::RIGHT_TOP_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::RIGHT_TOP_BORDER, pos, scale, 0.f);
     case 'M':
-        return std::make_shared<Border>(Border::EType::RIGHT_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::RIGHT_BORDER, pos, scale, 0.f);
     case 'L':
-        return std::make_shared<Border>(Border::EType::LEFT_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::LEFT_BORDER, pos, scale, 0.f);
     case 'P':
-        return std::make_shared<Border>(Border::EType::TOP_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::TOP_BORDER, pos, scale, 0.f);
     case 'I':
-        return std::make_shared<Border>(Border::EType::RIGHT_BOTTOM_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::RIGHT_BOTTOM_BORDER, pos, scale, 0.f);
     case 'U':
-        return std::make_shared<Border>(Border::EType::LEFT_BOTTOM_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::LEFT_BOTTOM_BORDER, pos, scale, 0.f);
     case 'Y':
-        return std::make_shared<Border>(Border::EType::BOTTOM_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::BOTTOM_BORDER, pos, scale, 0.f);
     case 'J':
-        return std::make_shared<Border>(Border::EType::LEFT_TOP_SUB_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::LEFT_TOP_SUB_BORDER, pos, scale, 0.f);
     case 'T':
-        return std::make_shared<Border>(Border::EType::RIGHT_TOP_SUB_BORDER, glm::vec2(0.f), scale, 0.f);
+        return std::make_shared<Border>(Border::EType::RIGHT_TOP_SUB_BORDER, pos, scale, 0.f);
+    case 'G':
+        return std::make_shared<Border>(Border::EType::LEFT_BOTTOM_SUB_BORDER, pos, scale, 0.f);
+    case 'F':
+        return std::make_shared<Border>(Border::EType::RIGHT_BOTTOM_SUB_BORDER, pos, scale, 0.f);
+    case 'A':
+        return std::make_shared<CopperBlock>(CopperBlock::EType::COPPER_BLOCK_1x3_1, pos, scale, 0.f);
+    case 'S':
+        return std::make_shared<CopperBlock>(CopperBlock::EType::COPPER_BLOCK_1x3_2, pos, scale, 0.f);
+    case 'D':
+        return std::make_shared<CopperBlock>(CopperBlock::EType::COPPER_BLOCK_1x3_3, pos, scale, 0.f);
+    case 'V':
+        return std::make_shared<CopperBlock>(CopperBlock::EType::COPPER_BLOCK_3x1_1, pos, scale, 0.f);
+    case 'C':
+        return std::make_shared<CopperBlock>(CopperBlock::EType::COPPER_BLOCK_3x1_2, pos, scale, 0.f);
+    case 'H':
+        return std::make_shared<CopperBlock>(CopperBlock::EType::COPPER_BLOCK_3x1_3, pos, scale, 0.f);
+    case 'R':
+        return std::make_shared<CopperBlock>(CopperBlock::EType::COPPER_BLOCK_1x1_1, pos, scale, 0.f);
     default:
         return nullptr;
     }

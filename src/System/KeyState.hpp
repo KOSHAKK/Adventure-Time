@@ -12,5 +12,5 @@ public:
 
 
 private:
-	static std::array<bool, static_cast<size_t>(Keys::KEY_LAST)> m_keys;
+	static std::array<bool, static_cast<std::size_t>(Keys::KEY_LAST)> m_keys;
 };

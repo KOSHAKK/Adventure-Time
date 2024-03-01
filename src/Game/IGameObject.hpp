@@ -1,8 +1,9 @@
 #pragma once
 #include <glm/vec2.hpp>
 #include <memory>
-#include "../Physics/PhysicsEngine.hpp"
 #include <vector>
+
+#include "../Physics/PhysicsEngine.hpp"
 
 class IGameObject
 {
@@ -14,6 +15,7 @@ public:
 		MYCELIUM_BLOCK,
 		BORDER,
 		PLAYER,
+		COPPER_BLOCK,
 	};
 
 

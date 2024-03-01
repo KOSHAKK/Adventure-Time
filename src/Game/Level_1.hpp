@@ -1,10 +1,13 @@
 #pragma once
-#include "ILevel.hpp"
-#include "NinjaFrog.hpp"
 #include <memory>
 #include <vector>
 #include <string>
 #include <array>
+
+#include "ILevel.hpp"
+#include "NinjaFrog.hpp"
+
+
 
 
 /*
@@ -24,7 +27,17 @@
 	Y -> bottom_border
 	T -> right_top_sub_border
 	J -> left_top_sub_border
+	G -> left_bottom_sub_border
+	F -> right_bottom_sub_border
+	A -> copper_block1x3_1
+	S -> copper_block1x3_2
+	D -> copper_block1x3_3
+	V -> copper_block3x1_1
+	C -> copper_block3x1_2
+	H -> copper_block3x1_3
+	R -> copper_block1x1_1
 
+	// K
 	O -> AIR
 */
 
@@ -47,7 +60,7 @@ public:
 	 
 private:
 
-	std::shared_ptr<IGameObject> get_object_from_decsription(const char description, const glm::vec2& scale);
+	std::shared_ptr<IGameObject> get_object_from_decsription(const char description, const glm::vec2& scale, const glm::vec2& pos);
 
 	float m_background_pos = 0.f;
 
@@ -58,14 +71,14 @@ private:
 		"JYYYYYYYYYYYYYYYYT",
 		"MOOOOOOOOOOOOOOOOL",
 		"MOOOOOOOOOOOOOOOOL",
-		"MOOOOOOOOOOOQOOOOL",
-		"MOOOOOOOOOOQOOOOOL",
-		"MOOOOOOOOOQOOOOOOL",
-		"MOOOOOOOOQOOOOOOOL",
-		"MOOOOOOOQOOOOOOOOL",
+		"MOOOOOOOOOOOOOROOL",
 		"MOOOOOOOOOOOOOOOOL",
-		"MOOOOOOOOOOOOOOOOL",
-		"JPPPPPPPPPPPPPPPPQ",
+		"MVCHOOOOOOOOOOOORL",
+		"MRROOOQWEOOOOOOOOL",
+		"MROOOOAOAOOOQWEOOL",
+		"MOOOOOSOSOOOROROOL",
+		"MOOOOODODOOOROROOL",
+		"GPPPPPPPPPPPPPPPPF",
 
 	};
 };

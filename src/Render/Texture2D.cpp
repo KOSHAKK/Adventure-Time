@@ -69,7 +69,7 @@ namespace Render
 
 	const SubTexture2D& Texture2D::get_subTexture(const std::string& name)
 	{
-		auto& it = m_sub_textures.find(name);
+		auto it = m_sub_textures.find(name);
 		if (it == m_sub_textures.end())
 		{
 			std::cerr << "Can't find sub texture with name: " << name << std::endl;

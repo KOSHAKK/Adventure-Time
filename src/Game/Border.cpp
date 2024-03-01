@@ -44,7 +44,11 @@ Border::Border(const EType type, const glm::vec2& position, const glm::vec2& siz
 	case Border::EType::LEFT_TOP_SUB_BORDER:
 		m_sprite = ResourceManager::load_sprite("border_block" + std::to_string(counter), "default_shader", "terrain_atlas", static_cast<const unsigned int>(size.x), static_cast<const unsigned int>(size.y), "left_top_sub_border");
 		break;
-	default:
+	case Border::EType::LEFT_BOTTOM_SUB_BORDER:
+		m_sprite = ResourceManager::load_sprite("border_block" + std::to_string(counter), "default_shader", "terrain_atlas", static_cast<const unsigned int>(size.x), static_cast<const unsigned int>(size.y), "left_bottom_sub_border");
+		break;
+	case Border::EType::RIGHT_BOTTOM_SUB_BORDER:
+		m_sprite = ResourceManager::load_sprite("border_block" + std::to_string(counter), "default_shader", "terrain_atlas", static_cast<const unsigned int>(size.x), static_cast<const unsigned int>(size.y), "right_bottom_sub_border");
 		break;
 	}
 

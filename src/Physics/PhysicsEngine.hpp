@@ -8,7 +8,6 @@
 class ILevel;
 class IGameObject;
 
-constexpr float G = 0.2f;
 
 class PhysicsEngine {
 public:
@@ -44,4 +43,5 @@ public:
 private:
     static std::unordered_set<std::shared_ptr<IGameObject>> m_dynamicObjects;
     static std::shared_ptr<ILevel> m_current_level;
+    static std::shared_ptr<IGameObject> m_player;
 };

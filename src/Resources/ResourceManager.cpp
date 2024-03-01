@@ -56,7 +56,7 @@ std::shared_ptr<Render::ShaderProgram> ResourceManager::load_shader_program(cons
 
 std::shared_ptr<Render::ShaderProgram> ResourceManager::get_shader_program(const std::string& name)
 {
-	auto& found = m_shader_programs.find(name);
+	auto found = m_shader_programs.find(name);
 
 	if (found != m_shader_programs.end())
 	{
@@ -87,7 +87,7 @@ std::shared_ptr<Render::Texture2D> ResourceManager::load_texture(const std::stri
 
 std::shared_ptr<Render::Texture2D> ResourceManager::get_texture(const std::string& name)
 {
-	auto& found = m_textures.find(name);
+	auto found = m_textures.find(name);
 
 	if (found != m_textures.end())
 	{
@@ -123,7 +123,7 @@ std::shared_ptr<Render::Sprite> ResourceManager::load_sprite(const std::string& 
 
 std::shared_ptr<Render::Sprite> ResourceManager::get_sprite(const std::string& name)
 {
-	auto& found = m_sprites.find(name);
+	auto found = m_sprites.find(name);
 
 	if (found != m_sprites.end())
 	{

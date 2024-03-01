@@ -1,11 +1,13 @@
-#include "ILevel.hpp"
-#include "../Resources/ResourceManager.hpp"
-#include "MyceliumBlock.hpp"
-#include <glm/vec2.hpp>
 #include <algorithm>
-
 #include <iostream>
 #include <cmath>
+
+#include <glm/vec2.hpp>
+
+#include "ILevel.hpp"
+#include "MyceliumBlock.hpp"
+#include "../Resources/ResourceManager.hpp"
+
 
 void ILevel::render()
 {

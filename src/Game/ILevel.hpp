@@ -23,7 +23,6 @@ public:
 	bool has_object_up(const glm::vec2& bottom_left, const glm::vec2& top_right) const;
 
 
-
 protected:
 	bool m_is_finish = false;
 	unsigned int BLOCK_SIZE;

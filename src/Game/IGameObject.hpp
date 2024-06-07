@@ -1,6 +1,5 @@
 #pragma once
 #include <glm/vec2.hpp>
-#include <memory>
 #include <vector>
 
 #include "../Physics/PhysicsEngine.hpp"
@@ -9,6 +8,7 @@ class IGameObject
 {
 public:
 	IGameObject();
+	virtual ~IGameObject() {	};
 
 	enum class EObjectType
 	{
@@ -16,6 +16,7 @@ public:
 		BORDER,
 		PLAYER,
 		COPPER_BLOCK,
+		FRUIT,
 	};
 
 
@@ -37,7 +38,10 @@ public:
 	void set_fall(const bool is_fall) { m_is_fall = is_fall; }
 	const float get_jump_power() const { return m_jump_power; }
 	void set_jump_power(const float power) { m_jump_power = power; }
-	const float virtual get_max_jump_power() const = 0;
+	const float virtual get_max_jump_power() const { return 0.f; }
+	void virtual on_colision() {	};
+
+	
 
 
 protected:

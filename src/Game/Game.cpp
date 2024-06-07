@@ -2,7 +2,9 @@
 #include <iostream>
 #include "Level_1.hpp"
 #include <glm/mat4x4.hpp>
+#include "../System/Keys.hpp"
 #include "../Render/Sprite.hpp"
+#include "../System/KeyState.hpp"
 #include "../Render/Texture2D.hpp"
 #include "../Render/ShaderProgram.hpp"
 #include <glm/gtc/matrix_transform.hpp>
@@ -10,8 +12,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../Render/AnimatedSprite.hpp"
 #include "../Resources/ResourceManager.hpp"
-#include "../System/Keys.hpp"
-#include "../System/KeyState.hpp"
 
 void Game::init(const glm::uvec2& window_size)
 {
@@ -34,6 +34,16 @@ void Game::init(const glm::uvec2& window_size)
 
 void Game::update(const uint64_t delta)
 {
+    frame_counter++;
+    timer += delta;
+    if (timer >= 1000)
+    {
+        timer = 0.f;
+        m_fps = frame_counter;
+        frame_counter = 0;
+    }
+
+
     level_1->update(delta);
 }
 
@@ -77,12 +87,17 @@ void Game::set_viewport(const unsigned int width, const unsigned int height, con
     glViewport(leftOffset, bottomOffset, width, height);
 }
 
-unsigned int Game::get_current_width()
+unsigned int Game::get_fps() const
+{
+    return m_fps;
+}
+
+unsigned int Game::get_current_width() const
 {
     return level_1->get_width();
 }
 
-unsigned int Game::get_current_height()
+unsigned int Game::get_current_height() const
 {
     return level_1->get_height();
 }

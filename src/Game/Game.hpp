@@ -21,8 +21,10 @@ public:
 
 	void set_viewport(const unsigned int width, const unsigned int height, const unsigned int leftOffset, const unsigned int bottomOffset);
 
-	unsigned int get_current_width();
-	unsigned int get_current_height();
+	unsigned int get_fps() const;
+
+	unsigned int get_current_width() const;
+	unsigned int get_current_height() const;
 
 
 private:
@@ -30,6 +32,9 @@ private:
 	std::shared_ptr<Render::ShaderProgram> m_pShaderProgram;
 
 	std::shared_ptr<ILevel> level_1;
+	unsigned int m_fps = 0;
 
+	unsigned int frame_counter = 0;
+	uint64_t timer = 0.f;
 
 };

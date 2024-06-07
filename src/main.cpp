@@ -14,8 +14,8 @@
 #include "System/KeyState.hpp"
 #include "System/Keys.hpp"
 
-
 #include <GLFW/glfw3.h>
+
 
 std::unique_ptr<Game> game = std::make_unique<Game>();
 
@@ -70,6 +70,7 @@ int main(const int argc, const char** argv)
         std::cout << "Can't load GLAD!" << std::endl;
     }
 
+
     std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 #pragma endregion
@@ -81,6 +82,7 @@ int main(const int argc, const char** argv)
     ResourceManager::init(argv[0]);
     PhysicsEngine::init();
     game->init(window_size);
+
 
     glfwSwapInterval(1);
 
@@ -96,11 +98,11 @@ int main(const int argc, const char** argv)
         t1 = static_cast<float>(glfwGetTime());
 
 
+        glfwSetWindowTitle(pWindow, (std::string("Adventure Time FPS: ") + std::to_string(game->get_fps())).c_str());
 
         game->update(delta);
         PhysicsEngine::update(delta);
         game->render();
-
 
 
 

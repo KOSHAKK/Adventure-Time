@@ -4,10 +4,16 @@
 #include "../Game/ILevel.hpp"
 #include "../System/Keys.hpp"
 #include "../System/KeyState.hpp"
+#include <iostream>
+
+#include "../Game/NinjaFrog.hpp"
+#include "../Game/Fruit.hpp"
+#include <memory>
 
 
 std::unordered_set<std::shared_ptr<IGameObject>> PhysicsEngine::m_dynamicObjects;
 std::shared_ptr<ILevel> PhysicsEngine::m_current_level;
+std::shared_ptr<IGameObject>PhysicsEngine::m_player;
 
 void PhysicsEngine::init()
 {
@@ -19,25 +25,34 @@ void PhysicsEngine::terminate()
     m_dynamicObjects.clear();
     m_current_level.reset();
 }
-
 void PhysicsEngine::update(const uint64_t delta)
 {
     for (auto& currentObject : m_dynamicObjects)
     {
+
+
+
+        if (currentObject->type() == IGameObject::EObjectType::FRUIT)
+        {
+            if (has_colliders_intersection(currentObject->get_colliders(), currentObject->get_pos(), m_player->get_colliders(), m_player->get_pos()))
+            {
+                currentObject->on_colision();
+            }
+        }
+
         if (currentObject->type() == IGameObject::EObjectType::PLAYER)
         {
             static float elapsed_time = 0.f;
             if (!m_current_level->has_object_down(glm::vec2(currentObject->get_pos().x + 20.f, currentObject->get_pos().y + 36.f), (currentObject->get_pos() + currentObject->get_size()) - 20.f) && !currentObject->is_jump()) // fix colider 
             {
-                elapsed_time += static_cast<float>(delta) / 450;
-
-
-                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y - elapsed_time * delta));
-                currentObject->set_fall(true);
+                    elapsed_time += static_cast<float>(delta) / 450;
+                    currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y - elapsed_time * delta));
+                    currentObject->set_fall(true);
             }
             else
             {
                 elapsed_time = 0.f;
+                currentObject->on_colision();
                 currentObject->set_fall(false);
             }
         }
@@ -54,7 +69,7 @@ void PhysicsEngine::update(const uint64_t delta)
                 currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y + (currentObject->get_jump_power()/700) * delta));
                 currentObject->set_jump_power(currentObject->get_jump_power() - (1.0f * delta));
             }
-            else
+            else 
             {
                 currentObject->set_jump_power(0.f);
             }
@@ -108,6 +123,10 @@ void PhysicsEngine::update(const uint64_t delta)
             {
                 currentObject->set_pos(new_pos);
             }
+            else
+            {
+                currentObject->on_colision();
+            }
 
         }
     }
@@ -155,5 +174,10 @@ bool PhysicsEngine::has_colliders_intersection(const std::vector<AABB>& collider
 void PhysicsEngine::set_current_level(std::shared_ptr<ILevel> level)
 {
     m_current_level.swap(level);
+}
+
+void PhysicsEngine::set_current_player(std::shared_ptr<IGameObject> p_player)
+{
+    m_player = p_player;
 }
 

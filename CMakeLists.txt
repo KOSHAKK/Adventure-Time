@@ -39,6 +39,8 @@ add_executable(SimpleGame
 	src/Game/MyceliumBlock.cpp
 	src/Game/NinjaFrog.hpp
 	src/Game/NinjaFrog.cpp
+	src/Game/Fruit.hpp
+	src/Game/Fruit.cpp
 	
 	src/Physics/PhysicsEngine.hpp
 	src/Physics/PhysicsEngine.cpp

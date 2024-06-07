@@ -8,8 +8,6 @@
 NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float max_velocity, const float rotate)
     : m_MAX_SPEED(max_velocity)
 {
-
-
     m_object_type = IGameObject::EObjectType::PLAYER;
 	static int counter = 0;
 	counter++;

@@ -37,8 +37,9 @@ public:
 
     static bool has_colliders_intersection(const std::vector<AABB>& collider1, const glm::vec2& pos1, const std::vector<AABB>& collider2, const glm::vec2& pos2);
 
-
+    
     static void set_current_level(std::shared_ptr<ILevel> p_level);
+    static void set_current_player(std::shared_ptr<IGameObject> p_player);
 
 private:
     static std::unordered_set<std::shared_ptr<IGameObject>> m_dynamicObjects;

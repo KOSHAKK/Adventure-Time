@@ -8,6 +8,7 @@
 #include "../Game/Border.hpp"
 #include <glm/vec2.hpp>
 #include "Level_1.hpp"
+#include "../Game/Fruit.hpp"
 
 #include <iostream>
 #include <array>
@@ -117,12 +118,31 @@ void Level_1::init()
     ResourceManager::load_texture_atlas("ninja_frog_jump_atlas", "res/Textures/Main Characters/Ninja Frog/Jump (32x32).png", ninja_jump_sub_textures_names, 32, 32);
 
     std::vector<std::string> ninja_fall_sub_textures_names{
-    "ninja_frog_fall1",
+        "ninja_frog_fall1",
     };
     ResourceManager::load_texture_atlas("ninja_frog_fall_atlas", "res/Textures/Main Characters/Ninja Frog/Fall (32x32).png", ninja_fall_sub_textures_names, 32, 32);
 
 
-
+    std::vector<std::string> apple_sub_textures_names{
+        "apple1",
+        "apple2",
+        "apple3",
+        "apple4",
+        "apple5",
+        "apple6",
+        "apple7",
+        "apple8",
+        "apple9",
+        "apple10",
+        "apple11",
+        "apple12",
+        "apple13",
+        "apple14",
+        "apple15",
+        "apple16",
+        "apple17",
+    };
+    ResourceManager::load_texture_atlas("fruit_apple_atlas", "res/Textures/Fruits/Apple.png", apple_sub_textures_names, 32, 32);
 
 
 
@@ -130,6 +150,7 @@ void Level_1::init()
 
     m_player = std::make_unique<NinjaFrog>(glm::vec2(100, 500), glm::vec2(100, 100), 0.25f);
     PhysicsEngine::addDynamicGameObject(m_player);
+    PhysicsEngine::set_current_player(m_player);
 
     unsigned int offsetX = 0;
     int offsetY = get_height() - 64;
@@ -285,6 +306,8 @@ std::shared_ptr<IGameObject> Level_1::get_object_from_decsription(const char des
         return std::make_shared<CopperBlock>(CopperBlock::EType::COPPER_BLOCK_3x1_3, pos, scale, 0.f);
     case 'R':
         return std::make_shared<CopperBlock>(CopperBlock::EType::COPPER_BLOCK_1x1_1, pos, scale, 0.f);
+    case 'K':
+        return std::make_shared<Fruit>(Fruit::EType::Apple, pos, scale, 0.f);
     default:
         return nullptr;
     }

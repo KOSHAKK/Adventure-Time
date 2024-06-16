@@ -139,7 +139,7 @@ std::shared_ptr<Render::Texture2D> ResourceManager::load_texture_atlas(const std
 																	   const unsigned int SubTextureWidht, 
 																	   const unsigned int SubTextureHeight)
 {
-	auto pTexture = load_texture(std::move(texture_name), std::move(path));
+	auto pTexture = load_texture(texture_name, path);
 	if (pTexture)
 	{
 		const unsigned int textureWidth = pTexture->get_width();
@@ -150,7 +150,7 @@ std::shared_ptr<Render::Texture2D> ResourceManager::load_texture_atlas(const std
 		{
 			glm::vec2 leftBottomUV(static_cast<float>(currentTextureOffsetX) / textureWidth, static_cast<float>(currentTextureOffsetY - SubTextureHeight) / textureHeight);
 			glm::vec2 rightTopUV(static_cast<float>(currentTextureOffsetX + SubTextureWidht) / textureWidth, static_cast<float>(currentTextureOffsetY) / textureHeight);
-			pTexture->add_subTexture(std::move(currentSubTextureName), leftBottomUV, rightTopUV);
+			pTexture->add_subTexture(currentSubTextureName, leftBottomUV, rightTopUV);
 
 			currentTextureOffsetX += SubTextureWidht;
 			if (currentTextureOffsetX >= textureWidth)
@@ -163,25 +163,34 @@ std::shared_ptr<Render::Texture2D> ResourceManager::load_texture_atlas(const std
 	return pTexture;
 }
 
-std::shared_ptr<Render::AnimatedSprite> ResourceManager::load_animated_sprite(const std::string& spriteName, const std::string& textureName, const std::string& shaderName, const unsigned int spriteWidth, const unsigned int spriteHeight, const std::string& subTextureName)
+std::shared_ptr<Render::AnimatedSprite> ResourceManager::load_animated_sprite(const std::string& spriteName, const std::string& textureName, const std::string& shaderName, const unsigned int spriteWidth, const unsigned int spriteHeight, const std::string& subTextureName, bool lopped)
 {
 	auto pTexture = get_texture(textureName);
-	if (!pTexture)
-	{
-		std::cerr << "Can't find the texture: " << textureName << " for the sprite: " << spriteName << std::endl;
-	}
-
 	auto pShader = get_shader_program(shaderName);
-	if (!pShader)
-	{
-		std::cerr << "Can't find the shader: " << shaderName << " for the sprite: " << spriteName << std::endl;
-	}
 
-	std::shared_ptr<Render::AnimatedSprite> newSprite = m_animated_sprites.emplace(textureName, std::make_shared<Render::AnimatedSprite>(pTexture,
+
+	std::shared_ptr<Render::AnimatedSprite> newSprite = m_animated_sprites.emplace(spriteName, std::make_shared<Render::AnimatedSprite>(pTexture,
 		subTextureName,
 		pShader,
 		glm::vec2(0.f, 0.f),
-		glm::vec2(spriteWidth, spriteHeight))).first->second;
+		glm::vec2(spriteWidth, spriteHeight), 0.f, lopped)).first->second;
+
+
+
+	//std::cout << "--------------------------------------------\n";
+	//std::cout << spriteName << std::endl;
+	//std::cout << m_animated_sprites.size() << std::endl;
+	//std::cout << subTextureName << std::endl;
+	//std::cout << "--------------------------------------------\n";
+	//
+
+
+	/*if (textureName == "fruit_apple_atlas")
+	{
+		std::cout << &(*newSprite) << std::endl;
+		std::cout << m_animated_sprites.size() << std::endl;
+	}*/
+
 
 	return newSprite;
 }

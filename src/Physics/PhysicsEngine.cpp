@@ -24,19 +24,19 @@ void PhysicsEngine::terminate()
 {
     m_dynamicObjects.clear();
     m_current_level.reset();
+    m_player.reset();
 }
+
 void PhysicsEngine::update(const uint64_t delta)
 {
     for (auto& currentObject : m_dynamicObjects)
     {
-
-
-
         if (currentObject->type() == IGameObject::EObjectType::FRUIT)
         {
             if (has_colliders_intersection(currentObject->get_colliders(), currentObject->get_pos(), m_player->get_colliders(), m_player->get_pos()))
             {
                 currentObject->on_colision();
+                break;
             }
         }
 
@@ -45,20 +45,19 @@ void PhysicsEngine::update(const uint64_t delta)
             static float elapsed_time = 0.f;
             if (!m_current_level->has_object_down(glm::vec2(currentObject->get_pos().x + 20.f, currentObject->get_pos().y + 36.f), (currentObject->get_pos() + currentObject->get_size()) - 20.f) && !currentObject->is_jump()) // fix colider 
             {
-                    elapsed_time += static_cast<float>(delta) / 450;
-                    currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y - elapsed_time * delta));
-                    currentObject->set_fall(true);
+                elapsed_time += static_cast<float>(delta) / 450;
+                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y - elapsed_time * delta));
+                currentObject->set_fall(true);
             }
             else
             {
                 elapsed_time = 0.f;
-                currentObject->on_colision();
                 currentObject->set_fall(false);
             }
         }
 
 
-        
+
 
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,10 +65,11 @@ void PhysicsEngine::update(const uint64_t delta)
         {
             if (!m_current_level->has_object_up(glm::vec2(currentObject->get_pos().x + 20.f, currentObject->get_pos().y + 10.f), glm::vec2((currentObject->get_pos() + currentObject->get_size()).x - 20.f, (currentObject->get_pos() + currentObject->get_size()).y)))
             {
-                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y + (currentObject->get_jump_power()/700) * delta));
+                currentObject->set_pos(glm::vec2(currentObject->get_pos().x, currentObject->get_pos().y + (currentObject->get_jump_power() / 700) * delta));
                 currentObject->set_jump_power(currentObject->get_jump_power() - (1.0f * delta));
+
             }
-            else 
+            else
             {
                 currentObject->set_jump_power(0.f);
             }
@@ -78,7 +78,6 @@ void PhysicsEngine::update(const uint64_t delta)
         {
             currentObject->set_jump(false);
             currentObject->set_jump_power(0.f);
-
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -101,7 +100,7 @@ void PhysicsEngine::update(const uint64_t delta)
 
             const auto& objects_to_cheak = m_current_level->get_object_in_area(new_pos, new_pos + currentObject->get_size());
 
-            
+
 
 
             bool has_collision = false;
@@ -114,22 +113,19 @@ void PhysicsEngine::update(const uint64_t delta)
                     if (has_colliders_intersection(colliders, new_pos, colliders_to_cheak, current_object_to_cheak->get_pos()))
                     {
                         has_collision = true;
+                        current_object_to_cheak->on_colision();
                         break;
                     }
                 }
             }
-            
+
             if (!has_collision)
             {
                 currentObject->set_pos(new_pos);
             }
-            else
-            {
-                currentObject->on_colision();
-            }
-
         }
     }
+    
 }
 
 void PhysicsEngine::addDynamicGameObject(std::shared_ptr<IGameObject> pGameObject)

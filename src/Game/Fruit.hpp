@@ -1,7 +1,7 @@
 #pragma once
+#include "../Render/AnimatedSprite.hpp"
 #include "IGameObject.hpp"
 #include <memory>
-#include "../Render/AnimatedSprite.hpp"
 
 class Fruit : public IGameObject
 {
@@ -25,7 +25,6 @@ public:
 		Strawberry,
 	};
 	Fruit(const EType fruit_type, const glm::vec2& pos, const glm::vec2& scale, const float rotate = 0.f);
-	~Fruit() {	}
 
 	void update(const uint64_t delta) override;
 	void render() const override;
@@ -42,4 +41,5 @@ public:
 private:
 	EType m_type;
 	std::shared_ptr<Render::AnimatedSprite> m_sprite;
+	std::shared_ptr<Render::AnimatedSprite> m_collected_sprite;
 };

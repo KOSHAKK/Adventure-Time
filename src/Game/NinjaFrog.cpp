@@ -11,7 +11,7 @@ NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float m
     m_object_type = IGameObject::EObjectType::PLAYER;
 	static int counter = 0;
 	counter++;
-	m_sprites[static_cast<size_t>(EState::IDLE)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter),
+	m_sprites[static_cast<size_t>(EState::IDLE)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter++),
 		"ninja_frog_idle_atlas", "default_shader", static_cast<const unsigned int>(scale.x), static_cast<const unsigned int>(scale.y), "ninja_frog_idle1");
 
 
@@ -33,7 +33,7 @@ NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float m
     m_sprites[static_cast<size_t>(EState::IDLE)]->set_position(pos);
     m_sprites[static_cast<size_t>(EState::IDLE)]->set_rotate(rotate);
 
-    m_sprites[static_cast<size_t>(EState::RUN)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter),
+    m_sprites[static_cast<size_t>(EState::RUN)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter++),
         "ninja_frog_run_atlas", "default_shader", static_cast<const unsigned int>(scale.x), static_cast<const unsigned int>(scale.y), "ninja_frog_run1");
     std::vector<std::pair<std::string, uint64_t>> run_states = {
         std::make_pair("ninja_frog_run1", 50),
@@ -55,7 +55,7 @@ NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float m
     m_sprites[static_cast<size_t>(EState::RUN)]->set_rotate(rotate);
 
 
-    m_sprites[static_cast<size_t>(EState::JUMP)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter),
+    m_sprites[static_cast<size_t>(EState::JUMP)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter++),
         "ninja_frog_jump_atlas", "default_shader", static_cast<const unsigned int>(scale.x), static_cast<const unsigned int>(scale.y), "ninja_frog_jump1");
     std::vector<std::pair<std::string, uint64_t>> jump_states = {
        std::make_pair("ninja_frog_jump1", 50),
@@ -66,7 +66,7 @@ NinjaFrog::NinjaFrog(const glm::vec2& pos, const glm::vec2& scale, const float m
     m_sprites[static_cast<size_t>(EState::JUMP)]->set_rotate(rotate);
 
 
-    m_sprites[static_cast<size_t>(EState::FALL)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter),
+    m_sprites[static_cast<size_t>(EState::FALL)] = ResourceManager::load_animated_sprite("NinjaFrog" + std::to_string(counter++),
         "ninja_frog_fall_atlas", "default_shader", static_cast<const unsigned int>(scale.x), static_cast<const unsigned int>(scale.y), "ninja_frog_fall1");
     std::vector<std::pair<std::string, uint64_t>> fall_states = {
        std::make_pair("ninja_frog_fall1", 50),

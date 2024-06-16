@@ -21,12 +21,8 @@ void ILevel::render()
 
 void ILevel::update(const uint64_t delta)
 {
-	for (auto& obj : m_game_objects) {
-		if (obj)
-		{
-			obj->update(delta);
-		}
-	}
+	for (auto& obj : m_game_objects) 
+		if (obj) obj->update(delta);
 }
 
 unsigned int ILevel::get_width() const
@@ -112,7 +108,8 @@ bool ILevel::has_object_down(const glm::vec2& bottom_left, const glm::vec2& top_
 
 	for (size_t x = startX; x <= EndX; x++)
 	{
-		if (m_game_objects[y * (get_width() / BLOCK_SIZE) + x])
+		auto obj = m_game_objects[y * (get_width() / BLOCK_SIZE) + x];
+		if (obj && obj->type() != IGameObject::EObjectType::FRUIT)
 		{
 			return true;
 		}
@@ -143,7 +140,8 @@ bool ILevel::has_object_up(const glm::vec2& bottom_left, const glm::vec2& top_ri
 
 	for (size_t x = startX; x <= EndX; x++)
 	{
-		if (m_game_objects[y * (get_width() / BLOCK_SIZE) + x])
+		auto obj = m_game_objects[y * (get_width() / BLOCK_SIZE) + x];
+		if (obj && obj->type() != IGameObject::EObjectType::FRUIT)
 		{
 			return true;
 		}

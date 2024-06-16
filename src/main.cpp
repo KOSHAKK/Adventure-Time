@@ -110,6 +110,7 @@ int main(const int argc, const char** argv)
         glfwPollEvents();
     }
 
+    PhysicsEngine::terminate();
     glfwTerminate();
     return 0;
 }

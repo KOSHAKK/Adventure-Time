@@ -145,6 +145,16 @@ void Level_1::init()
     ResourceManager::load_texture_atlas("fruit_apple_atlas", "res/Textures/Fruits/Apple.png", apple_sub_textures_names, 32, 32);
 
 
+    std::vector<std::string> collected_sub_textures_names{
+        "collected1",
+        "collected2",
+        "collected3",
+        "collected4",
+        "collected5",
+        "collected6",
+    };
+    ResourceManager::load_texture_atlas("fruit_collected_atlas", "res/Textures/Fruits/Collected.png", collected_sub_textures_names, 32, 32);
+
 
 
 

@@ -58,7 +58,8 @@ public:
 		const std::string& shaderName,
 		const unsigned int spriteWidth,
 		const unsigned int spriteHeight,
-		const std::string& subTextureName = "default");
+		const std::string& subTextureName = "default",
+		bool lopped = true);
 
 
 	static std::shared_ptr<Render::AnimatedSprite> get_animated_sprite(const std::string& spriteName);

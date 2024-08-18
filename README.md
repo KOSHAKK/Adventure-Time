@@ -1,5 +1,9 @@
 # OpenGL-game
 
+<p align="center">
+<img src="https://imgur.com/a/3xYB4LL">
+</p>
+
 ## Building
 
 ```powershell

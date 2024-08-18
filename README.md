@@ -1,7 +1,7 @@
 # OpenGL-game
 
 <p align="center">
-<img src="https://imgur.com/a/3xYB4LL">
+<img src="https://imgur.com/a/3xYB4LL" alt="2D Game" title="2D Game">
 </p>
 
 ## Building

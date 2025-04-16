@@ -7,8 +7,8 @@
 ## Building
 
 ```powershell
-git clone https://github.com/KOSHAKK/First-OpenGL-game.git
-cd First-OpenGL-game
+git clone https://github.com/KOSHAKK/Adventure-Time
+cd Adventure-Time
 mkdir build
 cd build
 cmake ..

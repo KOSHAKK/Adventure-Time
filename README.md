@@ -6,7 +6,7 @@
 
 ## Building
 
-```powershell
+```bash
 git clone https://github.com/KOSHAKK/Adventure-Time
 cd Adventure-Time
 mkdir build
